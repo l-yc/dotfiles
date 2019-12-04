@@ -56,6 +56,7 @@ else
     let g:tex_conceal='abdmg'
 
     Plug 'sheerun/vim-polyglot'     " syntax highlighting for everything :D
+    let g:polyglot_disabled = ['latex']
     Plug 'dense-analysis/ale'       " linter
     let b:ale_linters = {'javascript': ['eslint']}
     let b:ale_fixers = {'javascript': ['eslint']}

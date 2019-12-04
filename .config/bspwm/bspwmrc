@@ -31,4 +31,5 @@ bspc rule -a Screenkey manage=off
 ***REMOVED***
 #***REMOVED***
 compton --config ~/.config/compton/compton.conf &
+conky -c ~/.config/conky/conky.conf
 ~/Documents/BSPWM/startupConfig.sh
