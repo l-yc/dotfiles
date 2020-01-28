@@ -26,7 +26,7 @@ alias ll='ls -al'
 alias vim='vimx'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
 ***REMOVED***
-alias school='cd "/home/lyc/Dropbox/Ninjabobo5/!School-Work/Y4"'
+alias school='cd "/home/lyc/Dropbox/Ninjabobo5/!School-Work/Y5"'
 alias andev='cd "/home/lyc/OneDrive/CS4131/"'
 alias androidStudioVar='export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly'
 alias osuVar='export LD_LIBRARY_PATH="$(pwd)/osu.Desktop/bin/Debug/netcoreapp2.2"'

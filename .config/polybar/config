@@ -68,7 +68,7 @@ font-3 = siji:pixelsize=14;1
 ;modules-right = filesystem xbacklight memory cpu battery temperature date powermenu
 modules-left = bspwm 
 modules-center = pulseaudio spotify
-modules-right = xkeyboard wlan memory cpu battery date powermenu
+modules-right = xkeyboard wired-network wireless-network memory cpu battery date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -232,7 +232,28 @@ format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #4bffdc
 label = %percentage_used%%
 
-[module/wlan]
+[module/wired-network]
+type = internal/network
+interface = enp2s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+label-connected = %ifname% 
+label-disconnected =  %ifname%
+
+format-disconnected = 
+;format-disconnected = <label-disconnected>
+label-disconnected-foreground = ${colors.foreground-alt}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/wireless-network]
 type = internal/network
 interface = wlp4s0
 interval = 3.0
@@ -242,8 +263,8 @@ format-connected-underline = #9f78e1
 label-connected = %essid%
 label-disconnected =  %ifname%
 
-;format-disconnected =
-format-disconnected = <label-disconnected>
+format-disconnected =
+;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
 label-disconnected-foreground = ${colors.foreground-alt}

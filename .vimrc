@@ -53,7 +53,8 @@ else
     set conceallevel=1
     hi Conceal ctermbg=16
     " because molokai screws up the background
-    let g:tex_conceal='abdmg'
+    set concealcursor=nvc
+    let g:tex_conceal='abdmgs'
 
     Plug 'sheerun/vim-polyglot'     " syntax highlighting for everything :D
     let g:polyglot_disabled = ['latex']
@@ -87,8 +88,8 @@ else
     autocmd filetype java     nnoremap <buffer> <F5> :w<CR>:!javac % && java %:r <CR>
     autocmd filetype python   nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
     " Robotics stuff
-    autocmd filetype python   nnoremap <buffer> <C-d> :w<CR>:!***REMOVED***/download.sh % <CR>
-    autocmd filetype python   nnoremap <buffer> <C-r> :w<CR>:!***REMOVED***/downloadAndRun.sh % <CR>
+    "autocmd filetype python   nnoremap <buffer> <C-d> :w<CR>:!***REMOVED***/download.sh % <CR>
+    "autocmd filetype python   nnoremap <buffer> <C-r> :w<CR>:!***REMOVED***/downloadAndRun.sh % <CR>
 
     autocmd filetype tex      call SetTexOptions()
 
@@ -108,6 +109,8 @@ else
         "let &g:makeprg="make d"
         nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
         ino <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
+        nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
+        ino <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
 
         nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++11 grader.cpp % -o %:r && ./%:r<CR>
         nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++11 grader.cpp % -o %:r && ./%:r < in.txt<CR>
@@ -148,6 +151,7 @@ else
     if has("autocmd")
         augroup templates
             autocmd BufNewFile *.cpp 0r ~/Templates/ans.cpp
+            autocmd BufNewFile *.html 0r ~/Templates/page.html
         augroup END
     endif
 endif
