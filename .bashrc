@@ -22,7 +22,7 @@ export PATH
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
-alias ll='ls -al'
+alias ll='ls -al --color=auto'
 alias vim='vimx'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
 ***REMOVED***
@@ -75,4 +75,6 @@ finish() {
 
 trap finish EXIT
 
-. hoard
+
+source /home/lyc/bin/hoard
+source <(kitty + complete setup bash)

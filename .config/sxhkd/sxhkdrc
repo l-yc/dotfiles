@@ -95,11 +95,13 @@ alt + t
 
 # terminal emulator
 super + Return
-    urxvt
+    kitty
+    #urxvt256c-ml
 
 # for one handed triggering
 ctrl + alt + t
-	urxvt
+    kitty
+	#urxvt256c-ml
 
 # program launcher
 super + @space

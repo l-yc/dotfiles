@@ -16,6 +16,7 @@ URxvt.internalBorder: 10
 URxvt.cursorColor2: 0
 URxvt.keysym.C-Down:  resize-font:smaller
 URxvt.keysym.C-Up:    resize-font:bigger
+!URxvt.visualBell: true
 
 URxvt*depth: 32
 URxvt*background: rgba:0000/0000/0200/c800
@@ -59,7 +60,8 @@ rofi.columns:                        2
 !!rofi.padding:                        350
 !rofi.line-padding:                   10
 !rofi.fixed-num-lines:                true
-rofi.terminal:                       urxvt256c
+!rofi.terminal:                       urxvt256c-ml
+rofi.terminal:                       kitty
 rofi.ssh-command:                    {terminal} -e {ssh-client} pi@{host} -p 8022
 !rofi.parse-hosts:                    true
 rofi.matching:                       fuzzy

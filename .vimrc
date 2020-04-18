@@ -1,5 +1,16 @@
 silent! so .vimlocal    " to allow for project specific settings
 
+" General colors (to work with kitty)
+if has('gui_running') || has('nvim') 
+    hi Normal 		guifg=#f6f3e8 guibg=#242424 
+else
+    " Set the terminal default background and foreground colors, thereby
+    " improving performance by not needing to set these colors on empty cells.
+    hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+    let &t_ti = &t_ti . "\033]10;#f6f3e8\007\033]11;#242424\007"
+    let &t_te = &t_te . "\033]110\007\033]111\007"
+endif
+
 if exists('g:vimMinimal')
     " contest vimrc
     call plug#begin('~/.vim/plugged')
@@ -15,8 +26,11 @@ if exists('g:vimMinimal')
     set ts=4 sts=4 sw=4 et ai
     set hls is
     set nu ru ls=2 stal=2 bg=dark
-    au FileType cpp nn <F5> :w<CR>:!g++ -std=c++11 -Wall -fsanitize=address % -o %:r && time ./%:r < in.txt<CR>
+    au FileType cpp nn <F5> :wa<CR>:!g++ -std=c++11 -Wall -fsanitize=address % -o %:r && time ./%:r < in.txt<CR>
+    au FileType cpp nn <F6> :!time ./%:r < in.txt<CR>
     colorscheme evening
+    hi Normal ctermbg=0
+    hi Visual ctermbg=1
 else
     " normal vimrc
     "
@@ -42,6 +56,8 @@ else
     let g:netrw_winsize=25
     let g:netrw_liststyle=3 " tree style
     Plug 'majutsushi/tagbar'
+
+    Plug 'tpope/vim-surround'
 
     " Extras
     Plug 'junegunn/limelight.vim'
@@ -100,20 +116,20 @@ else
     autocmd filetype sh       nnoremap <buffer> <F5> :w<CR>:!chmod +x % &&./%<CR>
 
     function SetCppOptions()
-        "nnoremap <F5> :w<CR>:!g++ -std=c++11 -D_GLIBCXX_DEBUG % -o %:r && ./%:r <CR>
-        "nnoremap <F8> :w<CR>:!g++ -std=c++11 -g -D_GLIBCXX_DEBUG % && gdb a.out <CR>
+        "nnoremap <F5> :w<CR>:!g++ -std=c++17 -D_GLIBCXX_DEBUG % -o %:r && ./%:r <CR>
+        "nnoremap <F8> :w<CR>:!g++ -std=c++17 -g -D_GLIBCXX_DEBUG % && gdb a.out <CR>
         "fsanitize debugs null pointer exceptions
-        "nnoremap <F5> :w<CR>:!g++ -std=c++11 -fsanitize=address % -o %:r && ./%:r<CR>
-        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++11 -Wall -fsanitize=address && time ./%:r < %:r.in)"
-        let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++11 -Wall -fsanitize=address && time ./%:r < in.txt)"
+        "nnoremap <F5> :w<CR>:!g++ -std=c++17 -fsanitize=address % -o %:r && ./%:r<CR>
+        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < %:r.in)"
+        let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < in.txt)"
         "let &g:makeprg="make d"
         nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
         ino <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
         nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
         ino <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
 
-        nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++11 grader.cpp % -o %:r && ./%:r<CR>
-        nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++11 grader.cpp % -o %:r && ./%:r < in.txt<CR>
+        nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++17 grader.cpp % -o %:r<CR>
+        nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++17 grader.cpp % -o %:r && ./%:r < in.txt<CR>
         let g:airline#extensions#clock#format = '%H:%M:%S'
         let g:airline#extensions#clock#updatetime = 1000
         let g:airline#extensions#clock#mode = 'elapsed'
@@ -140,7 +156,30 @@ else
         iabbrev POST router.post('', function(req, res, next) {
     endfunction
 
+    " vim hardcodes background color erase even if the terminfo file does
+    " not contain bce (not to mention that libvte based terminals
+    " incorrectly contain bce in their terminfo files). This causes
+    " incorrect background rendering when using a color theme with a
+    " background color.
+    let &t_ut=''
+
+    " set Vim-specific sequences for RGB colors
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+    "" General colors
+    "if has('gui_running') || has('nvim')
+    "    hi Normal 		guifg=#f6f3e8 guibg=#242424
+    "else
+    "    " Set the terminal default background and foreground colors, thereby
+    "    " improving performance by not needing to set these colors on empty cells.
+    "    hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+    "    let &t_ti = &t_ti . "\033]10;#f6f3e8\007\033]11;#242424\007"
+    "    let &t_te = &t_te . "\033]110\007\033]111\007"
+    "endif
+
     " Look
+    let g:molokai_original = 1
     let g:rehash256=1
     set cursorline
     colorscheme molokai
@@ -152,6 +191,7 @@ else
         augroup templates
             autocmd BufNewFile *.cpp 0r ~/Templates/ans.cpp
             autocmd BufNewFile *.html 0r ~/Templates/page.html
+            autocmd BufNewFile *.tex 0r ~/Templates/doc.tex
         augroup END
     endif
 endif
