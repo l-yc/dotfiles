@@ -90,16 +90,16 @@ external_monitor() {
     if [[ "$1" == "--restore" ]]; then
         xrandr --output HDMI-1 --off --output eDP-1 --mode 1920x1080
         bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
-        PRIMARY=eDP-1 sxhkd &
+        PRIMARY=eDP-1 nohup sxhkd &
     elif [[ "$1" == "--dual" ]]; then
         xrandr --output HDMI-1 --mode 1920x1080 --output eDP-1 --mode 1920x1080 --right-of HDMI-1
         bspc monitor HDMI-1 -d I II III IV V VI VII VIII IX
         bspc monitor eDP-1 -d X
-        PRIMARY=HDMI-1 SECONDARY=eDP-1 sxhkd &
+        PRIMARY=HDMI-1 SECONDARY=eDP-1 nohup sxhkd &
     else
         xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1 --output eDP-1 --off
         bspc monitor HDMI-1 -d I II III IV V VI VII VIII IX
-        PRIMARY=HDMI-1 sxhkd &
+        PRIMARY=HDMI-1 nohup sxhkd &
     fi
     $HOME/.config/polybar/launch.sh
 }

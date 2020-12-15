@@ -19,7 +19,7 @@ BAR="flush"
 #  polybar --reload flush &
 #fi
 for m in $(polybar --list-monitors | cut -d":" -f1); do
-    MONITOR=$m polybar --reload $BAR &
+    MONITOR=$m nohup polybar --reload $BAR &
 done
 
 echo "Polybar launched..."
