@@ -62,21 +62,32 @@ else
     " Extras
     Plug 'junegunn/limelight.vim'
 
+    Plug 'sirver/ultisnips'
+        let g:UltiSnipsExpandTrigger = '<tab>'
+        let g:UltiSnipsJumpForwardTrigger = '<tab>'
+        let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
+    Plug 'KeitaNakamura/tex-conceal.vim'
+        set conceallevel=1
+        let g:tex_conceal='abdmg'
+        hi Conceal ctermbg=none
+
     Plug 'lervag/vimtex'
-    let g:tex_flavor='latex'
-    let g:vimtex_view_method='zathura'
-    let g:vimtex_quickfix_mode=0
-    set conceallevel=1
-    hi Conceal ctermbg=16
-    " because molokai screws up the background
-    set concealcursor=nvc
-    let g:tex_conceal='abdmgs'
+        let g:tex_flavor='latex'
+        let g:vimtex_view_method='zathura'
+        let g:vimtex_quickfix_mode=0
+
+    "set conceallevel=1
+    "hi Conceal ctermbg=16
+    "" because molokai screws up the background
+    "set concealcursor=nvc
+    "let g:tex_conceal='abdmgs'
 
     Plug 'sheerun/vim-polyglot'     " syntax highlighting for everything :D
     let g:polyglot_disabled = ['latex']
     Plug 'dense-analysis/ale'       " linter
-    let b:ale_linters = {'javascript': ['eslint']}
-    let b:ale_fixers = {'javascript': ['eslint']}
+    let b:ale_linters = {'javascript': ['eslint'], 'python': ['pylint']}
+    let b:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
 
     call plug#end()
 
@@ -100,6 +111,7 @@ else
     inoremap <C-f> {<CR>}<C-o>O
 
     " Language specific options
+    autocmd filetype c        call SetCOptions()
     autocmd filetype cpp      call SetCppOptions()
     autocmd filetype java     nnoremap <buffer> <F5> :w<CR>:!javac % && java %:r <CR>
     autocmd filetype python   nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
@@ -110,10 +122,22 @@ else
     autocmd filetype tex      call SetTexOptions()
 
     autocmd filetype pug      call SetPugOptions()
-    autocmd filetype html     iabbrev </ </<C-X><C-O>
+    autocmd filetype html     call SetHTMLOptions()
+    autocmd filetype css      call SetCSSOptions()
     autocmd filetype javascript call SetJavascriptOptions()
 
     autocmd filetype sh       nnoremap <buffer> <F5> :w<CR>:!chmod +x % &&./%<CR>
+
+    function SetCOptions()
+        "let &g:makeprg="(gcc -o %:r %:r.c -std=c99 -Wall -fsanitize=address)"
+        let &g:makeprg="(gcc -o %:r %:r.c -std=c99 -Wall -lm)"
+        nn  <buffer> <F9> <ESC>:wa<CR>:make!<CR>:vertical botright copen 50<CR>
+        ino <buffer> <F9> <ESC>:wa<CR>:make!<CR>:vertical botright copen 50<CR>
+        nn  <buffer> <F5> <ESC>:!time ./%:r<CR>
+        ino <buffer> <F5> <ESC>:!time ./%:r<CR>
+        nn  <buffer> <F6> <ESC>:!time ./%:r < %:r.in<CR>
+        ino <buffer> <F6> <ESC>:!time ./%:r < %:r.in<CR>
+    endfunction
 
     function SetCppOptions()
         "nnoremap <F5> :w<CR>:!g++ -std=c++17 -D_GLIBCXX_DEBUG % -o %:r && ./%:r <CR>
@@ -128,8 +152,8 @@ else
         nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
         ino <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
 
-        nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++17 grader.cpp % -o %:r<CR>
-        nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++17 grader.cpp % -o %:r && ./%:r < in.txt<CR>
+        nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r<CR>
+        nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r && time ./%:r < in.txt<CR>
         let g:airline#extensions#clock#format = '%H:%M:%S'
         let g:airline#extensions#clock#updatetime = 1000
         let g:airline#extensions#clock#mode = 'elapsed'
@@ -151,7 +175,18 @@ else
         setlocal ts=2 sts=2 sw=2
     endfunction
 
+    function SetHTMLOptions()
+        setlocal ts=2 sts=2 sw=2
+        iabbrev </ </<C-X><C-O>
+    endfunction
+
+    function SetCSSOptions()
+        setlocal ts=2 sts=2 sw=2
+        iabbrev </ </<C-X><C-O>
+    endfunction
+
     function SetJavascriptOptions()
+        setlocal ts=2 sts=2 sw=2
         iabbrev GET router.get('', function(req, res, next) {
         iabbrev POST router.post('', function(req, res, next) {
     endfunction
@@ -195,3 +230,8 @@ else
         augroup END
     endif
 endif
+
+"" wayland
+"xnoremap "+y y:call system("wl-copy", @")<cr>
+"nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+"nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p

@@ -10,13 +10,16 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 #polybar example &
 
 # Launch Polybar for multiple displays
-BAR="flush" #"example"
-if type "xrandr"; then
-  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-    MONITOR=$m polybar --reload flush &
-  done
-else
-  polybar --reload flush &
-fi
+BAR="flush"
+#if type "xrandr"; then
+#  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+#    MONITOR=$m polybar --reload $BAR &
+#  done
+#else
+#  polybar --reload flush &
+#fi
+for m in $(polybar --list-monitors | cut -d":" -f1); do
+    MONITOR=$m polybar --reload $BAR &
+done
 
 echo "Polybar launched..."

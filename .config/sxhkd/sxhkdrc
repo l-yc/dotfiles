@@ -28,15 +28,15 @@ super + XF86AudioLowerVolume
     canberra-gtk-play -i audio-volume-change -d "changeVolume"
 
 ### Pause/Play Spotify
-shift + XF86AudioMute
+shift + {XF86AudioMute,KP_1}
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 
 ### Previous Spotify
-shift + XF86AudioLowerVolume
+shift + {XF86AudioLowerVolume,KP_2}
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
 ### Next Spotify
-shift + XF86AudioRaiseVolume 
+shift + {XF86AudioRaiseVolume,KP_3}
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 
 # Screen brightness controls
@@ -74,7 +74,7 @@ ctrl + shift + Print
 
 ### Lock computer
 ctrl + alt + l
-    i3lock-fancy
+    i3lock-fancy && xset dpms force off
     #~/Documents/BSPWM/lock_and_blur.sh
 
         ##############################
@@ -89,6 +89,12 @@ super + d
 
 alt + t
     feh ~/Documents/timetable.jpg
+
+alt + q
+    feh ~/Documents/periodic_table.jpg
+
+alt + n
+    networkmanager_dmenu
 #
 # wm independent hotkeys
 #
@@ -116,6 +122,10 @@ super + Escape
 #
 # bspwm hotkeys
 #
+
+# adopt all orphans, fix for x11 forwarding
+super + shift + o
+    bspc wm -o
 
 # quit bspwm normally
 super + alt + Escape
@@ -181,7 +191,10 @@ super + {o,i}
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+	bspc {desktop -f,node -d} "$PRIMARY:^{1-9,10}"
+
+super + alt + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} "$SECONDARY:^{1-9,10}"
 
 #
 # preselect

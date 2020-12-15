@@ -31,8 +31,8 @@ alert = #bd2c40
 
 [bar/flush]
 ;monitor = ${env:MONITOR:HDMI-1}
-;monitor = ${env:MONITOR:}
-monitor = "eDP-1"
+monitor = ${env:MONITOR:}
+;monitor = "eDP-1"
 width = 100%
 height = 27
 ;offset-x = 1%
@@ -67,8 +67,10 @@ font-3 = siji:pixelsize=14;1
 ;modules-center = 
 ;modules-right = filesystem xbacklight memory cpu battery temperature date powermenu
 modules-left = bspwm 
+;modules-center = pulseaudio spotify mc
 modules-center = pulseaudio spotify
-modules-right = xkeyboard wired-network wireless-network memory cpu battery date powermenu
+modules-right = xkeyboard wired-network wireless-network wireless-network-2 battery date powermenu
+;modules-right = xkeyboard wired-network wireless-network-1 wireless-network-2 memory cpu battery date powermenu
 
 tray-position = right
 tray-padding = 2
@@ -239,11 +241,10 @@ interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
 format-connected-underline = #9f78e1
-label-connected = %ifname% 
+label-connected = %ifname%: %upspeed% / %downspeed%
 label-disconnected =  %ifname%
 
 format-disconnected = 
-;format-disconnected = <label-disconnected>
 label-disconnected-foreground = ${colors.foreground-alt}
 
 ramp-signal-0 = 
@@ -260,14 +261,15 @@ interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
 format-connected-underline = #9f78e1
-label-connected = %essid%
-label-disconnected =  %ifname%
+;label-connected = %essid% | %upspeed% / %downspeed%
+;label-disconnected =  %ifname%
+label-connected = %{A1:networkmanager_dmenu &:} %essid%%{A} | %upspeed% / %downspeed%
+label-disconnected = "%{A1:networkmanager_dmenu &:}  Not Connected!%{A}"
 
 format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
 label-disconnected-foreground = ${colors.foreground-alt}
+
+format-packetloss = <animation-packetloss> <label-connected>
 
 ramp-signal-0 = 
 ramp-signal-1 = 
@@ -275,6 +277,44 @@ ramp-signal-2 = 
 ramp-signal-3 = 
 ramp-signal-4 = 
 ramp-signal-foreground = ${colors.foreground-alt}
+
+animation-packetloss-0 = ⚠
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 📶
+animation-packetloss-1-foreground = #000000
+; Framerate in milliseconds
+animation-packetloss-framerate = 500
+
+[module/wireless-network-2]
+type = internal/network
+interface = wlp5s0f3u3
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+;label-connected = %essid% | %upspeed% / %downspeed%
+;label-disconnected =  %ifname%
+label-connected = %{A1:networkmanager_dmenu &:} %essid%%{A} | %upspeed% / %downspeed%
+label-disconnected = "%{A1:networkmanager_dmenu &:}  Not Connected!%{A}"
+
+format-disconnected =
+label-disconnected-foreground = ${colors.foreground-alt}
+
+format-packetloss = <animation-packetloss> <label-connected>
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+animation-packetloss-0 = ⚠
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 📶
+animation-packetloss-1-foreground = #000000
+; Framerate in milliseconds
+animation-packetloss-framerate = 500
 
 [module/eth]
 type = internal/network
@@ -472,5 +512,15 @@ format-padding = 2
 exec = python3 /home/lyc/.config/polybar/scripts/spotify_status.py
 ;-p '[playing],[paused]' --playpause-font=2
 fomat-underline = #1db954
+
+[module/mc]
+type = custom/script
+interval = 1
+format-prefix = ":"
+format = <label>
+format-background = #555
+format-padding = 2
+exec = python3 /home/lyc/.config/polybar/scripts/mc_status.py -c '/home/lyc/.config/polybar/cache/mc_status.cache'
+***REMOVED***
 
 ; vim:ft=dosini

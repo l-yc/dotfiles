@@ -1,11 +1,36 @@
 #! /bin/sh
 
+# dual monitor set up
+if type "xrandr"; then
+    monitors=$(xrandr --query | grep " connected" | cut -d" " -f1)
+    if [[ ${a[*]} =~ "HDMI-1" ]]; then
+        PRIMARY="HDMI-1"
+        SECONDARY="eDP-1"
+        source ~/.bashrc
+        external_monitor
+    else
+        PRIMARY="eDP-1"
+    fi
+else
+    PRIMARY="eDP-1"
+fi
+export $PRIMARY
+export $SECONDARY
+
+#if type "xrandr"; then
+#  for m in $(xrandr --query | grep " connected" | cut -d" " -f1 | grep "HDMI-1"); do
+#    source ~/.bashrc
+#    external_monitor
+#  done
+#fi
+
 sxhkd &
 $HOME/.config/polybar/launch.sh
 
 #bspc monitor -d I II III IV V VI VII VIII IX X
-bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
+#bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
 #bspc monitor HDMI-1 -d X
+bspc monitor -d I II III IV V VI VII VIII IX
 
 bspc config remove_disabled_monitors true
 bspc config remove_unplugged_monitors true
@@ -31,5 +56,19 @@ bspc rule -a Screenkey manage=off
 ***REMOVED***
 #***REMOVED***
 compton --config ~/.config/compton/compton.conf &
-conky -c ~/.config/conky/conky.conf
-~/Documents/BSPWM/startupConfig.sh
+LC_CTYPE=zh_CN.utf8 LC_TIME=en_US.utf8 conky -c ~/.config/conky/conky.conf
+# or
+#LC_CTYPE=zh_CN.utf8 conky -c ~/.config/conky/conky.conf
+
+#~/Documents/BSPWM/startupConfig.sh
+#pasted directly below
+
+# touchpad
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1
+
+# chinese input
+ibus-daemon -drx
+
+# redshift
+redshift -l 1.290270:103.851959 &
