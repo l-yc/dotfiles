@@ -2,6 +2,9 @@
 # My Personal Keybindings
 #
 
+***REMOVED***
+
+
         ##############################
         # MEDIA KEYS
         ##############################
@@ -11,46 +14,32 @@ XF86AudioMute
     amixer set Master toggle
  
 ### Master Volume
-XF86AudioRaiseVolume
-    amixer set Master 5%+,5%+
-    canberra-gtk-play -i audio-volume-change -d "changeVolume"
- 
-super + XF86AudioRaiseVolume
-    amixer set Master 1%+,1%+
-    canberra-gtk-play -i audio-volume-change -d "changeVolume"
+{_,super + }{alt + KP_Add,XF86AudioRaiseVolume}
+    amixer set Master {5,1}%+
+#    canberra-gtk-play -i audio-volume-change -d "changeVolume"
 
-XF86AudioLowerVolume
-    amixer set Master 5%-,5%-
-    canberra-gtk-play -i audio-volume-change -d "changeVolume"
+{_,super + }{alt + KP_Subtract,XF86AudioLowerVolume}
+    amixer set Master {5,1}%-
+#    canberra-gtk-play -i audio-volume-change -d "changeVolume"
  
-super + XF86AudioLowerVolume
-    amixer set Master 1%-,1%-
-    canberra-gtk-play -i audio-volume-change -d "changeVolume"
-
 ### Pause/Play Spotify
-shift + {XF86AudioMute,KP_1}
+shift + {XF86AudioMute,alt + KP_Enter}
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 
 ### Previous Spotify
-shift + {XF86AudioLowerVolume,KP_2}
+shift + {XF86AudioLowerVolume,alt + KP_Subtract}
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
 ### Next Spotify
-shift + {XF86AudioRaiseVolume,KP_3}
+shift + {XF86AudioRaiseVolume,alt + KP_Add}
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 
 # Screen brightness controls
-XF86MonBrightnessUp
-    light -A 10 # increase screen brightness
+{_,super + }XF86MonBrightnessUp
+    light -A {10,1} # increase screen brightness
 
-XF86MonBrightnessDown
-    light -U 10 # decrease screen brightness
-
-super + XF86MonBrightnessUp
-    light -A 1 # increase screen brightness
-
-super + XF86MonBrightnessDown
-    light -U 1 # decrease screen brightness
+{_,super + }XF86MonBrightnessDown
+    light -U {10,1} # decrease screen brightness
 
 
         ##############################
