@@ -28,7 +28,7 @@ alias ll='ls -al --color=auto'
 alias vim='vimx'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
 ***REMOVED***
-alias school='cd "/home/lyc/Dropbox/Ninjabobo5/!School-Work/Y5"'
+***REMOVED***
 alias andev='cd "/home/lyc/OneDrive/CS4131/"'
 #alias androidStudioVar='export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly'
 alias osuVar='export LD_LIBRARY_PATH="$(pwd)/osu.Desktop/bin/Debug/netcoreapp2.2"'
@@ -82,7 +82,8 @@ todo() {
 
 present() {
     bspc monitor HDMI-1 -d X
-    xrandr --output HDMI-1 --auto --scale 2.0x2.0 --right-of eDP-1
+    #xrandr --output HDMI-1 --auto --scale 2.0x2.0 --right-of eDP-1
+    xrandr --output HDMI-1 --auto --same-as eDP-1
 }
 
 external_monitor() {
@@ -90,15 +91,27 @@ external_monitor() {
     if [[ "$1" == "--restore" ]]; then
         xrandr --output HDMI-1 --off --output eDP-1 --mode 1920x1080
         bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
+        bspc monitor HDMI-1 -d
         PRIMARY=eDP-1 nohup sxhkd &
     elif [[ "$1" == "--dual" ]]; then
         xrandr --output HDMI-1 --mode 1920x1080 --output eDP-1 --mode 1920x1080 --right-of HDMI-1
         bspc monitor HDMI-1 -d I II III IV V VI VII VIII IX
         bspc monitor eDP-1 -d X
         PRIMARY=HDMI-1 SECONDARY=eDP-1 nohup sxhkd &
+    elif [[ "$1" == "--present" ]]; then
+        xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1 --output eDP-1 --mode 1920x1080
+        bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
+        bspc monitor HDMI-1 -d X
+        PRIMARY=eDP-1 SECONDARY=HDMI-1 nohup sxhkd &
+    elif [[ "$1" == "--mirror" ]]; then # bar will die and show HDMI, which has nothing
+        xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1 --output eDP-1 --mode 1920x1080 --primary
+        bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
+        bspc monitor HDMI-1 -d
+        PRIMARY=eDP-1 nohup sxhkd &
     else
         xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1 --output eDP-1 --off
         bspc monitor HDMI-1 -d I II III IV V VI VII VIII IX
+        bspc monitor eDP-1 -d
         PRIMARY=HDMI-1 nohup sxhkd &
     fi
     $HOME/.config/polybar/launch.sh
@@ -108,9 +121,9 @@ mkcode() {
     mkdir $1
     cd $1
     touch in.txt
-    #vim $1.cpp
-    cp ~/Templates/ans.cpp $1.cpp
-    geany $1.cpp
+    vim $1.cpp
+    #cp ~/Templates/ans.cpp $1.cpp
+    #geany $1.cpp
 }
 
 #copy the section below into your .bashrc and uncomment to turn on auto save
@@ -123,3 +136,4 @@ trap finish EXIT
 
 source /home/lyc/bin/hoard
 source <(kitty + complete setup bash)
+alias config='/usr/bin/git --git-dir=/home/lyc/.cfg/ --work-tree=/home/lyc'
