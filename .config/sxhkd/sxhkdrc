@@ -14,12 +14,12 @@ XF86AudioMute
     amixer set Master toggle
  
 ### Master Volume
-{_,super + }{alt + KP_Add,XF86AudioRaiseVolume}
-    amixer set Master {5,1}%+
+{_,super + }{XF86AudioRaiseVolume,alt + KP_Add}
+    amixer set Master {5,1}%+{_,_}
 #    canberra-gtk-play -i audio-volume-change -d "changeVolume"
 
-{_,super + }{alt + KP_Subtract,XF86AudioLowerVolume}
-    amixer set Master {5,1}%-
+{_,super + }{XF86AudioLowerVolume,alt + KP_Subtract}
+    amixer set Master {5,1}%-{_,_}
 #    canberra-gtk-play -i audio-volume-change -d "changeVolume"
  
 ### Pause/Play Spotify
@@ -28,11 +28,11 @@ shift + {XF86AudioMute,alt + KP_Enter}
 
 ### Previous Spotify
 shift + {XF86AudioLowerVolume,alt + KP_Subtract}
-    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous {_,_}
 
 ### Next Spotify
 shift + {XF86AudioRaiseVolume,alt + KP_Add}
-    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next {_,_}
 
 # Screen brightness controls
 {_,super + }XF86MonBrightnessUp
@@ -71,10 +71,10 @@ ctrl + alt + l
         ##############################
 ### Launch nautilus
 super + e
-    nautilus ~
+    nemo ~
 
 super + d
-    nautilus ~/Downloads
+    nemo ~/Downloads
 
 alt + t
     feh ~/Documents/timetable.jpg
@@ -184,6 +184,15 @@ super + {_,shift + }{1-9,0}
 
 super + alt + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} "$SECONDARY:^{1-9,10}"
+
+# my additions
+# query node id for debuggin
+super + alt + f
+    notify-send -u normal "$(bspc query -N -n focused)"
+
+# rotate split
+super + shift + r
+    bspc node @parent -R 90
 
 #
 # preselect
