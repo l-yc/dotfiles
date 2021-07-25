@@ -1,5 +1,16 @@
 silent! so .vimlocal    " to allow for project specific settings
 
+" vim hardcodes background color erase even if the terminfo file does
+" not contain bce (not to mention that libvte based terminals
+" incorrectly contain bce in their terminfo files). This causes
+" incorrect background rendering when using a color theme with a
+" background color.
+let &t_ut=''
+
+" set Vim-specific sequences for RGB colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
 " General colors (to work with kitty)
 if has('gui_running') || has('nvim') 
     hi Normal 		guifg=#f6f3e8 guibg=#242424 
@@ -23,14 +34,15 @@ if exists('g:vimMinimal')
 
     syn on
     filet on
-    set ts=4 sts=4 sw=4 et ai
+    set ts=4 sts=4 sw=4 et ai mouse=a
     set hls is
     set nu ru ls=2 stal=2 bg=dark
-    au FileType cpp nn <F5> :wa<CR>:!g++ -std=c++11 -Wall -fsanitize=address % -o %:r && time ./%:r < in.txt<CR>
+    au FileType cpp nn <F5> :wa<CR>:!g++ -std=c++17 -Wall -fsanitize=address % -o %:r && time ./%:r < in.txt<CR>
     au FileType cpp nn <F6> :!time ./%:r < in.txt<CR>
-    colorscheme evening
-    hi Normal ctermbg=0
-    hi Visual ctermbg=1
+    colorscheme torte
+    "colorscheme evening
+    "hi Normal ctermbg=0
+    "hi Visual ctermbg=1
 else
     " normal vimrc
     "
@@ -59,6 +71,11 @@ else
 
     Plug 'tpope/vim-surround'
 
+    let g:ctrlp_map = '<c-p>'
+    let g:ctrlp_cmd = 'CtrlP'
+    let g:ctrlp_working_path_mode = 'ra'
+    Plug 'ctrlpvim/ctrlp.vim'
+
     " Extras
     Plug 'junegunn/limelight.vim'
 
@@ -85,9 +102,9 @@ else
 
     Plug 'sheerun/vim-polyglot'     " syntax highlighting for everything :D
     let g:polyglot_disabled = ['latex']
-    Plug 'dense-analysis/ale'       " linter
-    let b:ale_linters = {'javascript': ['eslint'], 'python': ['pylint']}
-    let b:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
+    "Plug 'dense-analysis/ale'       " linter
+    "let b:ale_linters = {'javascript': ['eslint'], 'python': ['pylint']}
+    "let b:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
 
     call plug#end()
 
@@ -107,6 +124,8 @@ else
     set softtabstop=4
     set shiftwidth=4
 
+    set mouse=a
+
     nnoremap 0 ^
     inoremap <C-f> {<CR>}<C-o>O
 
@@ -125,6 +144,7 @@ else
     autocmd filetype html     call SetHTMLOptions()
     autocmd filetype css      call SetCSSOptions()
     autocmd filetype javascript call SetJavascriptOptions()
+    autocmd filetype vue      call SetJavascriptOptions()
 
     autocmd filetype sh       nnoremap <buffer> <F5> :w<CR>:!chmod +x % &&./%<CR>
 
@@ -145,12 +165,24 @@ else
         "fsanitize debugs null pointer exceptions
         "nnoremap <F5> :w<CR>:!g++ -std=c++17 -fsanitize=address % -o %:r && ./%:r<CR>
         "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < %:r.in)"
-        let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < in.txt)"
+        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < in.txt)"
+        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall && time ./%:r < in.txt)"
         "let &g:makeprg="make d"
-        nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
-        ino <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
-        nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
-        ino <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
+
+        "nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
+        "ino <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
+        "nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
+        "ino <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
+        
+        " fancy rewrite using kitty
+        let g:cmd = 'kitty @ launch --cwd=current --type=window --keep-focus bash -c "'
+        let g:endcmd="read -p 'Press enter to continue'\""
+        let g:compile=g:cmd . 'g++ -o %s %s.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%s < in.txt; ' . g:endcmd
+        let g:run=g:cmd . 'time ./%s < in.txt; ' . g:endcmd
+        nn  <buffer> <F5> <ESC>:wa<CR>:call system(printf(compile, expand('%:r'), expand('%:r'), expand('%:r')))<CR>
+        ino <buffer> <F5> <ESC>:wa<CR>:call system(printf(compile, expand('%:r'), expand('%:r'), expand('%:r')))<CR>
+        nn  <buffer> <F6> <ESC>:wa<CR>:call system(printf(run, expand('%:r')))<CR>
+        ino <buffer> <F5> <ESC>:wa<CR>:call system(printf(run, expand('%:r')))<CR>
 
         nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r<CR>
         nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r && time ./%:r < in.txt<CR>
