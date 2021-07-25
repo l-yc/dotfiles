@@ -14,8 +14,9 @@ PATH="$PATH:/var/lib/snapd/snap/bin"
 PATH="$PATH:~/CodeSourcery/arm-2009q1/bin/"
 
 export GOPATH="$HOME/Documents/LocalDev/go"
-PATH="$PATH:/usr/local/go/bin"
+#PATH="$PATH:/usr/local/go/bin"
 #PATH=$PATH:$(go env GOPATH)/bin
+PATH="$PATH:$GOPATH/bin"
 export PATH
 
 export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly
@@ -29,9 +30,6 @@ alias vim='vimx'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
 ***REMOVED***
 ***REMOVED***
-alias andev='cd "/home/lyc/OneDrive/CS4131/"'
-#alias androidStudioVar='export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly'
-alias osuVar='export LD_LIBRARY_PATH="$(pwd)/osu.Desktop/bin/Debug/netcoreapp2.2"'
 alias pwdyy='pwd | xclip -selection clipboard'
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias docker='podman'
@@ -81,39 +79,44 @@ todo() {
 }
 
 present() {
-    bspc monitor HDMI-1 -d X
-    #xrandr --output HDMI-1 --auto --scale 2.0x2.0 --right-of eDP-1
-    xrandr --output HDMI-1 --auto --same-as eDP-1
+    bspc monitor HDMI-A-0 -d X
+    #xrandr --output HDMI-A-0 --auto --scale 2.0x2.0 --right-of eDP
+    xrandr --output HDMI-A-0 --auto --same-as eDP
 }
 
 external_monitor() {
 	pkill sxhkd
     if [[ "$1" == "--restore" ]]; then
-        xrandr --output HDMI-1 --off --output eDP-1 --mode 1920x1080
-        bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
-        bspc monitor HDMI-1 -d
-        PRIMARY=eDP-1 nohup sxhkd &
+        xrandr --output HDMI-A-0 --off --output eDP --mode 1920x1080
+        bspc monitor eDP -d I II III IV V VI VII VIII IX
+        bspc monitor HDMI-A-0 -d
+        export PRIMARY=eDP 
     elif [[ "$1" == "--dual" ]]; then
-        xrandr --output HDMI-1 --mode 1920x1080 --output eDP-1 --mode 1920x1080 --right-of HDMI-1
-        bspc monitor HDMI-1 -d I II III IV V VI VII VIII IX
-        bspc monitor eDP-1 -d X
-        PRIMARY=HDMI-1 SECONDARY=eDP-1 nohup sxhkd &
+        xrandr --output HDMI-A-0 --mode 1920x1080 --output eDP --mode 1920x1080 --right-of HDMI-A-0
+        bspc monitor HDMI-A-0 -d I II III IV V VI VII VIII IX
+        bspc monitor eDP -d X
+        export PRIMARY=HDMI-A-0 SECONDARY=eDP
     elif [[ "$1" == "--present" ]]; then
-        xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1 --output eDP-1 --mode 1920x1080
-        bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
-        bspc monitor HDMI-1 -d X
-        PRIMARY=eDP-1 SECONDARY=HDMI-1 nohup sxhkd &
+        #xrandr --output HDMI-A-0 --mode 1920x1080 --right-of eDP --output eDP --mode 1920x1080
+        #xrandr --output HDMI-A-0 --auto --right-of eDP --output eDP --mode 1920x1080
+        #xrandr --output HDMI-A-0 --mode 640x480 --right-of eDP --output eDP --mode 1920x1080
+        xrandr --output HDMI-A-0 --mode $2 --right-of eDP --output eDP --mode 1920x1080
+        bspc monitor eDP -d I II III IV V VI VII VIII IX
+        bspc monitor HDMI-A-0 -d X
+        export PRIMARY=eDP SECONDARY=HDMI-A-0
     elif [[ "$1" == "--mirror" ]]; then # bar will die and show HDMI, which has nothing
-        xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1 --output eDP-1 --mode 1920x1080 --primary
-        bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
-        bspc monitor HDMI-1 -d
-        PRIMARY=eDP-1 nohup sxhkd &
+        xrandr --output HDMI-A-0 --mode 1920x1080 --same-as eDP --output eDP --mode 1920x1080 --primary
+        bspc monitor eDP -d I II III IV V VI VII VIII IX
+        bspc monitor HDMI-A-0 -d
+        export PRIMARY=eDP
     else
-        xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1 --output eDP-1 --off
-        bspc monitor HDMI-1 -d I II III IV V VI VII VIII IX
-        bspc monitor eDP-1 -d
-        PRIMARY=HDMI-1 nohup sxhkd &
+        xrandr --output HDMI-A-0 --mode 1920x1080 --same-as eDP --output eDP --off
+        bspc monitor HDMI-A-0 -d I II III IV V VI VII VIII IX
+        bspc monitor eDP -d
+        export PRIMARY=HDMI-A-0
     fi
+    #nohup sxhkd -r sxhkd.out &
+    $HOME/.config/sxhkd/launch.sh
     $HOME/.config/polybar/launch.sh
 }
 
@@ -124,6 +127,71 @@ mkcode() {
     vim $1.cpp
     #cp ~/Templates/ans.cpp $1.cpp
     #geany $1.cpp
+}
+
+mark() {
+    # (.*\/)?([^\/]+)(\/.*)?$
+
+    if [ -z "$2" ]; then
+        echo "usage: -(u|s) <filename>"
+        return
+    fi
+
+    cur=`echo $2 | sed -E 's/(.*\/)?([^\/]+)(\/.*)?$/\2/g'`
+    echo "renaming... $cur"
+
+    if [[ $1 == "-u" ]]; then
+        echo "mark as unsolved"
+        new="_$cur"
+    elif [[ $1 == "-s" ]]; then
+        echo "mark as solved"
+        new="${cur}_"
+    else
+        echo "unknown flag"
+        return
+    fi
+
+    mv "$cur" "$new"
+}
+
+unzipper() {
+    filename="${1%.*}"
+    if zip --show-files $1 | grep -q "creating: $filename/"; then
+        echo "File is wrapped properly."
+        unzip "$1"
+    else
+        echo "Creating $filename directory"
+        mkdir "$filename"
+        mv "$1" "$filename"
+        cd "$filename"
+        if [[ "$?" -ne "0" ]]; then
+            echo "ERROR!"
+            return
+        fi
+        unzip "$1"
+        mv "$1" ..
+        cd ..
+    fi
+}
+
+ypl() {
+    hoard o ypl
+    source venv/bin/activate
+    python main.py
+}
+
+serve_static() {
+    python3 -m http.server 8080 --bind 127.0.0.1
+}
+
+pause() {
+    read -p "Press enter to continue"
+    #read -n 1 -s -r -p "Press any key to continue"
+}
+
+svg2png() {
+    f="${1%.*}"
+    inkscape -w 2048 "$f.svg" -o "$f.png" && xdg-open "$f.png"
 }
 
 #copy the section below into your .bashrc and uncomment to turn on auto save
