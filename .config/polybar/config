@@ -69,6 +69,7 @@ font-3 = siji:pixelsize=14;1
 modules-left = bspwm 
 ;modules-center = pulseaudio spotify mc
 modules-center = pulseaudio spotify
+;modules-center = pulseaudio
 modules-right = xkeyboard wired-network wireless-network wireless-network-2 battery date powermenu
 ;modules-right = xkeyboard wired-network wireless-network-1 wireless-network-2 memory cpu battery date powermenu
 
@@ -509,7 +510,7 @@ format = <label>
 format-background = #555
 format-padding = 2
 ;exec = python3 /home/lyc/.config/polybar/scripts/spotify_status.py -f '{artist}: {song}' 
-exec = python3 /home/lyc/.config/polybar/scripts/spotify_status.py
+;exec = python3 /home/lyc/.config/polybar/scripts/spotify_status.py
 ;-p '[playing],[paused]' --playpause-font=2
 fomat-underline = #1db954
 
