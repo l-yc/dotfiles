@@ -25,7 +25,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
-alias ll='ls -al --color=auto'
+alias lll='ls -al --color=auto'
+alias ll='exa -l --group-directories-first --git'
 alias vim='vimx'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
 ***REMOVED***
@@ -202,6 +203,7 @@ finish() {
 trap finish EXIT
 
 
-source /home/lyc/bin/hoard
+
 source <(kitty + complete setup bash)
 alias config='/usr/bin/git --git-dir=/home/lyc/.cfg/ --work-tree=/home/lyc'
+. "/home/lyc/bin/hoard"
