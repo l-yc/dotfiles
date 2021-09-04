@@ -58,23 +58,41 @@ else
     Plug 'tomasr/molokai'
 
     " Tools
-    " Plug 'scrooloose/nerdtree' 		" maybe will use this
-    " nnoremap <leader>2 :20Lexplore<CR>
-    " let g:netrw_liststyle= 3 " tree style
-    nnoremap <leader>2 :Lexplore<CR>
-    nnoremap <leader>3 :TagbarToggle<CR>
     nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
+
+    Plug 'tpope/vim-surround'
+
+    "Plug 'scrooloose/nerdtree' 		" maybe will use this
+    "" Toggle NERDTree on the right side by C-n
+    "noremap  <c-n> :NERDTreeToggle<cr>
+    "" Place NERDTree to right
+    "let g:NERDTreeWinPos = "right"
+    "let g:NERDTreeQuitOnOpen = "1"
+
+    nnoremap <leader>2 :20Lexplore<CR>
     let g:netrw_banner=0
     let g:netrw_winsize=25
     let g:netrw_liststyle=3 " tree style
-    Plug 'majutsushi/tagbar'
 
-    Plug 'tpope/vim-surround'
+    Plug 'majutsushi/tagbar'
+    nnoremap <leader>3 :TagbarToggle<CR>
 
     let g:ctrlp_map = '<c-p>'
     let g:ctrlp_cmd = 'CtrlP'
     let g:ctrlp_working_path_mode = 'ra'
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+    set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+    let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
     Plug 'ctrlpvim/ctrlp.vim'
+
+    nnoremap <leader>bn :bn<CR>
+    nnoremap <leader>bN :bN<CR>
+    nnoremap <leader>bd :bd<CR>
+
+    nnoremap gb :bn<CR>
+    nnoremap gB :bN<CR>
 
     " Extras
     Plug 'junegunn/limelight.vim'
@@ -134,6 +152,7 @@ else
     autocmd filetype cpp      call SetCppOptions()
     autocmd filetype java     nnoremap <buffer> <F5> :w<CR>:!javac % && java %:r <CR>
     autocmd filetype python   nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
+    autocmd filetype julia    nnoremap <buffer> <F5> :w<CR>:!julia %<CR>
     " Robotics stuff
     "autocmd filetype python   nnoremap <buffer> <C-d> :w<CR>:!***REMOVED***/download.sh % <CR>
     "autocmd filetype python   nnoremap <buffer> <C-r> :w<CR>:!***REMOVED***/downloadAndRun.sh % <CR>
@@ -223,34 +242,12 @@ else
         iabbrev POST router.post('', function(req, res, next) {
     endfunction
 
-    " vim hardcodes background color erase even if the terminfo file does
-    " not contain bce (not to mention that libvte based terminals
-    " incorrectly contain bce in their terminfo files). This causes
-    " incorrect background rendering when using a color theme with a
-    " background color.
-    let &t_ut=''
-
-    " set Vim-specific sequences for RGB colors
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
-    "" General colors
-    "if has('gui_running') || has('nvim')
-    "    hi Normal 		guifg=#f6f3e8 guibg=#242424
-    "else
-    "    " Set the terminal default background and foreground colors, thereby
-    "    " improving performance by not needing to set these colors on empty cells.
-    "    hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
-    "    let &t_ti = &t_ti . "\033]10;#f6f3e8\007\033]11;#242424\007"
-    "    let &t_te = &t_te . "\033]110\007\033]111\007"
-    "endif
-
     " Look
     let g:molokai_original = 1
     let g:rehash256=1
     set cursorline
     colorscheme molokai
-    set colorcolumn=80		" highlight column 80
+    set colorcolumn=80,94		" highlight column 80
     highlight ColorColumn ctermbg=darkgray
 
     " NEW: Template Files
