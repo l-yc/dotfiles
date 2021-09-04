@@ -66,6 +66,10 @@ ctrl + alt + l
     i3lock-fancy && xset dpms force off
     #~/Documents/BSPWM/lock_and_blur.sh
 
+### External display
+{XF86Display, ctrl + F7}
+    printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs printf -- '--%s\n' | xargs -I \{\} bash -ic 'external_monitor \{\}'
+
         ##############################
         # Navigation shortcuts
         ##############################

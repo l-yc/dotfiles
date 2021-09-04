@@ -82,10 +82,15 @@ todo() {
 present() {
     bspc monitor HDMI-A-0 -d X
     #xrandr --output HDMI-A-0 --auto --scale 2.0x2.0 --right-of eDP
-    xrandr --output HDMI-A-0 --auto --same-as eDP
 }
 
 external_monitor() {
+    if [[ "$1" == "--" ]]; then
+        echo "Usage: external_monitor [--(restore|dual|present|mirror)] [mode]"
+        return
+    fi
+
+    echo "received $1"
 	pkill sxhkd
     if [[ "$1" == "--restore" ]]; then
         xrandr --output HDMI-A-0 --off --output eDP --mode 1920x1080
@@ -193,6 +198,39 @@ pause() {
 svg2png() {
     f="${1%.*}"
     inkscape -w 2048 "$f.svg" -o "$f.png" && xdg-open "$f.png"
+}
+
+
+# https://unix.stackexchange.com/questions/1974/how-do-i-make-my-pc-speaker-beep
+function beep() {
+    if [ $# -ne 2 ]; then
+        echo 1>&2 "Usage: beep <frequency> <duration>"
+        return
+    fi
+
+    echo "beeping at ${1}Hz for ${2}s"
+    timeout -s SIGKILL ${2} speaker-test --frequency ${1} --test sine 2>&1 1>/dev/null
+}
+
+# https://superuser.com/questions/611538/is-there-a-way-to-display-a-countdown-or-stopwatch-timer-in-a-terminal
+function countdown(){
+    date1=$((`date +%s` + $1));
+    while [ "$date1" -ge `date +%s` ]; do
+        echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+        sleep 0.1
+    done
+    speak-ng "time's up"
+}
+function stopwatch(){
+    date1=`date +%s`;
+    while true; do
+        echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
+        if [[ "$1" == "--gui" ]]; then
+            notify-send --hint="string:x-dunst-stack-tag:stopwatch-$2" "$2 $(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
+        fi
+        #sleep 0.1
+        sleep 1
+    done
 }
 
 #copy the section below into your .bashrc and uncomment to turn on auto save
