@@ -111,6 +111,7 @@ else
         let g:tex_flavor='latex'
         let g:vimtex_view_method='zathura'
         let g:vimtex_quickfix_mode=0
+        let g:vimtex_fold_enabled=1
 
     "set conceallevel=1
     "hi Conceal ctermbg=16
@@ -247,7 +248,7 @@ else
     let g:rehash256=1
     set cursorline
     colorscheme molokai
-    set colorcolumn=80,94		" highlight column 80
+    set colorcolumn=80		" highlight column 80
     highlight ColorColumn ctermbg=darkgray
 
     " NEW: Template Files
