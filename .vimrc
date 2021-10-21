@@ -52,7 +52,7 @@ else
     " Look
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
-    let g:airline_theme='ouo'
+    let g:airline_theme='raven'
     let g:airline#extensions#tabline#enabled=1
     Plug 'enricobacis/vim-airline-clock'
     Plug 'tomasr/molokai'
@@ -121,9 +121,40 @@ else
 
     Plug 'sheerun/vim-polyglot'     " syntax highlighting for everything :D
     let g:polyglot_disabled = ['latex']
-    "Plug 'dense-analysis/ale'       " linter
-    "let b:ale_linters = {'javascript': ['eslint'], 'python': ['pylint']}
-    "let b:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
+
+    set signcolumn=number
+    Plug 'dense-analysis/ale'       " linter
+    let g:ale_linters = {'javascript': ['eslint'], 'python': ['pylint']}
+    let g:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
+    let g:ale_sign_column_always = 1
+    let g:ale_sign_error = '🔴'
+    let g:ale_sign_warning = '🟡'
+    highlight clear ALEErrorSign
+    highlight clear ALEWarningSign
+    let g:airline#extensions#ale#enabled = 1
+
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    " Use `[g` and `]g` to navigate diagnostics
+    " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
+    " GoTo code navigation.
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+    nmap <leader>rn <Plug>(coc-rename)
+    set cmdheight=2
+    set updatetime=300
+    " Make <CR> auto-select the first completion item and notify coc.nvim to
+    " format on enter, <cr> could be remapped by other vim plugin
+    inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+    
+    "Plug 'Shougo/deoplete.nvim'
+    "Plug 'roxma/nvim-yarp'
+    "Plug 'roxma/vim-hug-neovim-rpc'
+    "let g:deoplete#enable_at_startup = 1
 
     call plug#end()
 
@@ -160,11 +191,7 @@ else
 
     autocmd filetype tex      call SetTexOptions()
 
-    autocmd filetype pug      call SetPugOptions()
-    autocmd filetype html     call SetHTMLOptions()
-    autocmd filetype css      call SetCSSOptions()
-    autocmd filetype javascript call SetJavascriptOptions()
-    autocmd filetype vue      call SetJavascriptOptions()
+    autocmd filetype pug,html,css,javascript,typescript,vue call SetWebOptions()
 
     autocmd filetype sh       nnoremap <buffer> <F5> :w<CR>:!chmod +x % &&./%<CR>
 
@@ -223,22 +250,9 @@ else
         endif
     endfunction
 
-    function SetPugOptions()
-        setlocal ts=2 sts=2 sw=2
-    endfunction
-
-    function SetHTMLOptions()
+    function SetWebOptions()
         setlocal ts=2 sts=2 sw=2
         iabbrev </ </<C-X><C-O>
-    endfunction
-
-    function SetCSSOptions()
-        setlocal ts=2 sts=2 sw=2
-        iabbrev </ </<C-X><C-O>
-    endfunction
-
-    function SetJavascriptOptions()
-        setlocal ts=2 sts=2 sw=2
         iabbrev GET router.get('', function(req, res, next) {
         iabbrev POST router.post('', function(req, res, next) {
     endfunction
