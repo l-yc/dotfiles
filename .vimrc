@@ -40,15 +40,13 @@ if exists('g:vimMinimal')
     au FileType cpp nn <F5> :wa<CR>:!g++ -std=c++17 -Wall -fsanitize=address % -o %:r && time ./%:r < in.txt<CR>
     au FileType cpp nn <F6> :!time ./%:r < in.txt<CR>
     colorscheme torte
-    "colorscheme evening
-    "hi Normal ctermbg=0
-    "hi Visual ctermbg=1
 else
     " normal vimrc
-    "
+    
     " VimPlug config
     " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     call plug#begin('~/.vim/plugged')
+
     " Look
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -127,8 +125,8 @@ else
     let g:ale_linters = {'javascript': ['eslint'], 'python': ['pylint']}
     let g:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
     let g:ale_sign_column_always = 1
-    let g:ale_sign_error = '🔴'
-    let g:ale_sign_warning = '🟡'
+    let g:ale_sign_error = '❌'
+    let g:ale_sign_warning = '⚠️'
     highlight clear ALEErrorSign
     highlight clear ALEWarningSign
     let g:airline#extensions#ale#enabled = 1
@@ -179,6 +177,24 @@ else
     nnoremap 0 ^
     inoremap <C-f> {<CR>}<C-o>O
 
+    " Look
+    let g:molokai_original = 1
+    let g:rehash256=1
+    set cursorline
+    colorscheme molokai
+    set colorcolumn=80		" highlight column 80
+    highlight ColorColumn ctermbg=darkgray
+
+    " NEW: Template Files
+    if has("autocmd")
+        augroup templates
+            autocmd BufNewFile *.cpp 0r ~/Templates/ans.cpp
+            autocmd BufNewFile *.html 0r ~/Templates/page.html
+            autocmd BufNewFile *.tex 0r ~/Templates/doc.tex
+        augroup END
+    endif
+
+
     " Language specific options
     autocmd filetype c        call SetCOptions()
     autocmd filetype cpp      call SetCppOptions()
@@ -186,8 +202,8 @@ else
     autocmd filetype python   nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
     autocmd filetype julia    nnoremap <buffer> <F5> :w<CR>:!julia %<CR>
     " Robotics stuff
-    "autocmd filetype python   nnoremap <buffer> <C-d> :w<CR>:!***REMOVED***/download.sh % <CR>
-    "autocmd filetype python   nnoremap <buffer> <C-r> :w<CR>:!***REMOVED***/downloadAndRun.sh % <CR>
+    "autocmd filetype python   nnoremap <buffer> <C-d> :w<CR>:!/home/lyc/Dropbox/Main/Code/Robotics/download.sh % <CR>
+    "autocmd filetype python   nnoremap <buffer> <C-r> :w<CR>:!/home/lyc/Dropbox/Main/Code/Robotics/downloadAndRun.sh % <CR>
 
     autocmd filetype tex      call SetTexOptions()
 
@@ -199,27 +215,18 @@ else
         "let &g:makeprg="(gcc -o %:r %:r.c -std=c99 -Wall -fsanitize=address)"
         let &g:makeprg="(gcc -o %:r %:r.c -std=c99 -Wall -lm)"
         nn  <buffer> <F9> <ESC>:wa<CR>:make!<CR>:vertical botright copen 50<CR>
-        ino <buffer> <F9> <ESC>:wa<CR>:make!<CR>:vertical botright copen 50<CR>
         nn  <buffer> <F5> <ESC>:!time ./%:r<CR>
-        ino <buffer> <F5> <ESC>:!time ./%:r<CR>
         nn  <buffer> <F6> <ESC>:!time ./%:r < %:r.in<CR>
-        ino <buffer> <F6> <ESC>:!time ./%:r < %:r.in<CR>
     endfunction
 
     function SetCppOptions()
-        "nnoremap <F5> :w<CR>:!g++ -std=c++17 -D_GLIBCXX_DEBUG % -o %:r && ./%:r <CR>
-        "nnoremap <F8> :w<CR>:!g++ -std=c++17 -g -D_GLIBCXX_DEBUG % && gdb a.out <CR>
-        "fsanitize debugs null pointer exceptions
+        " fsanitize debugs null pointer exceptions
         "nnoremap <F5> :w<CR>:!g++ -std=c++17 -fsanitize=address % -o %:r && ./%:r<CR>
+        "nnoremap <F8> :w<CR>:!g++ -std=c++17 -fsanitize=address -g -D_GLIBCXX_DEBUG % && gdb a.out <CR>
         "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < %:r.in)"
-        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < in.txt)"
-        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall && time ./%:r < in.txt)"
-        "let &g:makeprg="make d"
 
         "nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
-        "ino <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
         "nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
-        "ino <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
         
         " fancy rewrite using kitty
         let g:cmd = 'kitty @ launch --cwd=current --type=window --keep-focus bash -c "'
@@ -227,12 +234,9 @@ else
         let g:compile=g:cmd . 'g++ -o %s %s.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%s < in.txt; ' . g:endcmd
         let g:run=g:cmd . 'time ./%s < in.txt; ' . g:endcmd
         nn  <buffer> <F5> <ESC>:wa<CR>:call system(printf(compile, expand('%:r'), expand('%:r'), expand('%:r')))<CR>
-        ino <buffer> <F5> <ESC>:wa<CR>:call system(printf(compile, expand('%:r'), expand('%:r'), expand('%:r')))<CR>
         nn  <buffer> <F6> <ESC>:wa<CR>:call system(printf(run, expand('%:r')))<CR>
-        ino <buffer> <F5> <ESC>:wa<CR>:call system(printf(run, expand('%:r')))<CR>
-
-        nnoremap <buffer> <F8> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r<CR>
-        nnoremap <buffer> <F9> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r && time ./%:r < in.txt<CR>
+        nn  <buffer> <F8> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r<CR>
+        nn  <buffer> <F9> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r && time ./%:r < in.txt<CR>
         let g:airline#extensions#clock#format = '%H:%M:%S'
         let g:airline#extensions#clock#updatetime = 1000
         let g:airline#extensions#clock#mode = 'elapsed'
@@ -256,23 +260,6 @@ else
         iabbrev GET router.get('', function(req, res, next) {
         iabbrev POST router.post('', function(req, res, next) {
     endfunction
-
-    " Look
-    let g:molokai_original = 1
-    let g:rehash256=1
-    set cursorline
-    colorscheme molokai
-    set colorcolumn=80		" highlight column 80
-    highlight ColorColumn ctermbg=darkgray
-
-    " NEW: Template Files
-    if has("autocmd")
-        augroup templates
-            autocmd BufNewFile *.cpp 0r ~/Templates/ans.cpp
-            autocmd BufNewFile *.html 0r ~/Templates/page.html
-            autocmd BufNewFile *.tex 0r ~/Templates/doc.tex
-        augroup END
-    endif
 endif
 
 "" wayland

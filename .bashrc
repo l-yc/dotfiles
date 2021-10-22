@@ -10,12 +10,9 @@ PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 PATH="$PATH:$HOME/Android/Sdk/platform-tools"
 PATH="$PATH:/var/lib/flatpak/exports/bin"
 PATH="$PATH:/var/lib/snapd/snap/bin"
-#PATH="$PATH:~/CodeSourcery/arm-2009q1/bin/:/home/lyc/Downloads/tmp/ev3/c4ev3/arm-linux-gnueabi"
 PATH="$PATH:~/CodeSourcery/arm-2009q1/bin/"
 
 export GOPATH="$HOME/Documents/LocalDev/go"
-#PATH="$PATH:/usr/local/go/bin"
-#PATH=$PATH:$(go env GOPATH)/bin
 PATH="$PATH:$GOPATH/bin"
 export PATH
 
@@ -29,10 +26,9 @@ alias lll='ls -al --color=auto'
 alias ll='exa -l --group-directories-first --git'
 alias vim='vimx'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
-***REMOVED***
-***REMOVED***
+alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
+alias school='cd "/home/lyc/Dropbox/Main/School/Y6"'
 alias pwdyy='pwd | xclip -selection clipboard'
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias docker='podman'
 alias chkspace='sudo du -d 1 -h | sort -h'
 # /etc/sysconfig/network-scripts/
@@ -233,7 +229,7 @@ function stopwatch(){
     done
 }
 
-#copy the section below into your .bashrc and uncomment to turn on auto save
+# close hook
 finish() {
     echo bye
 }

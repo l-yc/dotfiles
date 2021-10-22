@@ -1,4 +1,4 @@
-#from mcstatus import MinecraftServer
+from mcstatus import MinecraftServer
 import time
 import json
 import argparse

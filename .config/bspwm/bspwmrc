@@ -17,19 +17,9 @@ fi
 export $PRIMARY
 export $SECONDARY
 
-#if type "xrandr"; then
-#  for m in $(xrandr --query | grep " connected" | cut -d" " -f1 | grep "HDMI-1"); do
-#    source ~/.bashrc
-#    external_monitor
-#  done
-#fi
-
 sxhkd &
 $HOME/.config/polybar/launch.sh
 
-#bspc monitor -d I II III IV V VI VII VIII IX X
-#bspc monitor eDP-1 -d I II III IV V VI VII VIII IX
-#bspc monitor HDMI-1 -d X
 bspc monitor -d I II III IV V VI VII VIII IX
 
 bspc config remove_disabled_monitors true
@@ -52,17 +42,9 @@ bspc config gapless_monocle      true
 #bspc rule -a Kupfer.py focus=on
 #bspc rule -a Screenkey manage=off
 
-#***REMOVED***
-#***REMOVED***
-#***REMOVED***
-***REMOVED***
+feh --bg-fill ~/Pictures/Wallpapers/anime/wp4088544.jpg
 compton --config ~/.config/compton/compton.conf &
 LC_CTYPE=zh_CN.utf8 LC_TIME=en_US.utf8 conky -c ~/.config/conky/conky.conf
-# or
-#LC_CTYPE=zh_CN.utf8 conky -c ~/.config/conky/conky.conf
-
-#~/Documents/BSPWM/startupConfig.sh
-#pasted directly below
 
 # touchpad
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1

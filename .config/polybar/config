@@ -451,7 +451,6 @@ format-prefix = ":"
 format = <label>
 format-background = #555
 format-padding = 1
-exec = python3 $HOME/lyc/.config/polybar/scripts/mc_status.py -c '$HOME/.config/polybar/cache/mc_status.cache'
-***REMOVED***
+exec = python3 $HOME/.config/polybar/scripts/mc_status.py -c '$HOME/.config/polybar/cache/mc_status.cache'
 
 ; vim:ft=dosini
