@@ -43,7 +43,7 @@ bspc config gapless_monocle      true
 #bspc rule -a Screenkey manage=off
 
 feh --bg-fill ~/Pictures/Wallpapers/anime/wp4088544.jpg
-compton --config ~/.config/compton/compton.conf &
+picom --config ~/.config/picom/picom.conf &
 LC_CTYPE=zh_CN.utf8 LC_TIME=en_US.utf8 conky -c ~/.config/conky/conky.conf
 
 # touchpad
