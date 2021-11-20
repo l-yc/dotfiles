@@ -45,11 +45,11 @@ shift + {XF86AudioRaiseVolume,alt + KP_Add}
 
 ### Fullscreen Screenshots
 Print
-    import -window root ~/Pictures/Screenshot-$(date +"%Y-%m-%d-%H-%M-%S").png
+    import -window root ~/Pictures/Screenshots/Screenshot-$(date +"%Y-%m-%d-%H-%M-%S").png
 
 ### Select region screenshots
 shift + Print
-    import ~/Pictures/Screenshot-$(date +"%Y-%m-%d-%H-%M-%S").png
+    import ~/Pictures/Screenshots/Screenshot-$(date +"%Y-%m-%d-%H-%M-%S").png
 
 ctrl + Print
     import -window root '/tmp/screenshot.png'; xclip -selection clipboard -target image/png -i '/tmp/screenshot.png'
@@ -91,12 +91,14 @@ alt + n
 
 # terminal emulator
 super + Return
-    kitty
+    wezterm
+    #kitty
     #urxvt256c-ml
 
 # for one handed triggering
 ctrl + alt + t
-    kitty
+    wezterm
+    #kitty
 	#urxvt256c-ml
 
 # program launcher

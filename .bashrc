@@ -24,13 +24,14 @@ export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly
 # User specific aliases and functions
 alias lll='ls -al --color=auto'
 alias ll='exa -l --group-directories-first --git'
-alias vim='vimx'
+alias vim='nvim'
 alias vimm='vimx --cmd "let g:vimMinimal=1"'
 alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
 alias school='cd "/home/lyc/Dropbox/Main/School/Y6"'
 alias pwdyy='pwd | xclip -selection clipboard'
 alias docker='podman'
 alias chkspace='sudo du -d 1 -h | sort -h'
+alias chkbat='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 # /etc/sysconfig/network-scripts/
 
 # Add this to your .bashrc, .zshrc or equivalent.
@@ -194,6 +195,10 @@ pause() {
 svg2png() {
     f="${1%.*}"
     inkscape -w 2048 "$f.svg" -o "$f.png" && xdg-open "$f.png"
+}
+
+wez_rename_tab() {
+    printf "\x1b]2;$1\x1b\\"
 }
 
 
