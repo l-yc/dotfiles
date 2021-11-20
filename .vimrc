@@ -11,9 +11,15 @@ let &t_ut=''
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
+" C-r to fix syntax highlighting when it breaks
+" See: https://github.com/vim/vim/issues/2790
+nn <leader>l :syntax sync fromstart<CR>
+set redrawtime=10000
+
 " General colors (to work with kitty)
 if has('gui_running') || has('nvim') 
     hi Normal 		guifg=#f6f3e8 guibg=#242424 
+    set termguicolors
 else
     " Set the terminal default background and foreground colors, thereby
     " improving performance by not needing to set these colors on empty cells.
@@ -42,6 +48,7 @@ if exists('g:vimMinimal')
     colorscheme torte
 else
     " normal vimrc
+    nn <leader><space> :e $MYVIMRC<CR>
     
     " VimPlug config
     " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -72,8 +79,31 @@ else
     let g:netrw_winsize=25
     let g:netrw_liststyle=3 " tree style
 
-    Plug 'majutsushi/tagbar'
-    nnoremap <leader>3 :TagbarToggle<CR>
+    Plug 'liuchengxu/vista.vim'
+    nnoremap <leader>3 :Vista!!<CR>
+    let g:vista_sidebar_width = 50
+
+    " Executive used when opening vista sidebar without specifying it.
+    " See all the avaliable executives via `:echo g:vista#executives`.
+    let g:vista_default_executive = 'coc'
+
+    " How each level is indented and what to prepend.
+    " This could make the display more compact or more spacious.
+    " e.g., more compact: ["▸ ", ""]
+    " Note: this option only works for the kind renderer, not the tree renderer.
+    let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+
+    " Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+    let g:vista#renderer#enable_icon = 1
+
+    " The default icons can't be suitable for all the filetypes, you can extend it as you wish.
+    let g:vista#renderer#icons = {
+    \   "function": "\uf794",
+    \   "variable": "\uf71b",
+    \  }
+
+    "Plug 'majutsushi/tagbar'
+    "nnoremap <leader>3 :TagbarToggle<CR>
 
     let g:ctrlp_map = '<c-p>'
     let g:ctrlp_cmd = 'CtrlP'
@@ -136,12 +166,30 @@ else
     " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
+    "
     " GoTo code navigation.
     nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> gy <Plug>(coc-type-definition)
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
+
+    " Symbol renaming.
     nmap <leader>rn <Plug>(coc-rename)
+
+    " Formatting selected code.
+    xmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>f  <Plug>(coc-format-selected)
+
+    " Applying codeAction to the selected region.
+    " Example: `<leader>aap` for current paragraph
+    xmap <leader>a  <Plug>(coc-codeaction-selected)
+    nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+    " Remap keys for applying codeAction to the current buffer.
+    nmap <leader>ac  <Plug>(coc-codeaction)
+    " Apply AutoFix to problem on the current line.
+    nmap <leader>qf  <Plug>(coc-fix-current)
+
     set cmdheight=2
     set updatetime=300
     " Make <CR> auto-select the first completion item and notify coc.nvim to
@@ -198,6 +246,7 @@ else
     " Language specific options
     autocmd filetype c        call SetCOptions()
     autocmd filetype cpp      call SetCppOptions()
+    autocmd filetype go       call SetGoOptions()
     autocmd filetype java     nnoremap <buffer> <F5> :w<CR>:!javac % && java %:r <CR>
     autocmd filetype python   nnoremap <buffer> <F5> :w<CR>:!python3 %<CR>
     autocmd filetype julia    nnoremap <buffer> <F5> :w<CR>:!julia %<CR>
@@ -240,11 +289,17 @@ else
         let g:airline#extensions#clock#format = '%H:%M:%S'
         let g:airline#extensions#clock#updatetime = 1000
         let g:airline#extensions#clock#mode = 'elapsed'
+
+        nn  <leader>i   :30vs in.txt<CR><ESC>GA
         ":30vs in.txt<CR>
         "wincmd l
         "bel term
         "wincmd k
         ":res 20
+    endfunction
+
+    function SetGoOptions()
+        set noexpandtab
     endfunction
 
     function SetTexOptions()
