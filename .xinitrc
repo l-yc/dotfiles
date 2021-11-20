@@ -12,4 +12,4 @@ xset fp rehash
 [ -f /etc/xprofile ] && . /etc/xprofile
 [ -f ~/.xprofile ] && . ~/.xprofile
 #exec /usr/bin/bspwm
-exec /usr/bin/sway
+#exec /usr/bin/sway
