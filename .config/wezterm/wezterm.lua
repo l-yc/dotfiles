@@ -1,5 +1,7 @@
 local wezterm = require 'wezterm';
 
+require('status_line')
+
 return {
   keys = {
     -- This will create a new split and run your default program inside it
