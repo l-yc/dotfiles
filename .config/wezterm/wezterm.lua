@@ -45,4 +45,11 @@ return {
     hue = 1.0,
     saturation = 1.0,
   },
+
+  window_padding = {
+    left = 8,
+    right = 8,
+    top = 8,
+    bottom = 8,
+  }
 }
