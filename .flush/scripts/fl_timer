@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Modified from
+# https://superuser.com/questions/611538/is-there-a-way-to-display-a-countdown-or-stopwatch-timer-in-a-terminal
+
+#: Functions {{{
+
+countdown(){
+  date1=$((`date +%s` + $1));
+  while [ "$date1" -ge `date +%s` ]; do
+    echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+    sleep 0.1
+  done
+  speak-ng "time's up"
+}
+
+stopwatch(){
+  date1=`date +%s`;
+  echo $1
+  while true; do
+    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
+    if [[ "$1" == "--gui" ]]; then
+      notify-send --hint="string:x-dunst-stack-tag:stopwatch-$2" "$2 $(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)";
+    fi
+    sleep 1
+  done
+}
+
+#: }}}
+
+if [[ "$1" == "countdown" ]]; then
+  countdown "$2"
+elif [[ "$1" == "stopwatch" ]]; then
+  stopwatch "$2" "$3"
+else
+  echo "Usage: fl_timer (countdown|timer) [options]"
+fi

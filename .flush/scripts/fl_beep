@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Modified from
+# https://unix.stackexchange.com/questions/1974/how-do-i-make-my-pc-speaker-beep
+if [ $# -ne 2 ]; then
+  echo 1>&2 "Usage: beep <frequency> <duration>"
+  return
+fi
+
+echo "beeping at ${1}Hz for ${2}s"
+timeout -s SIGKILL ${2} speaker-test --frequency ${1} --test sine 2>&1 1>/dev/null
