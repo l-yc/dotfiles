@@ -53,5 +53,8 @@ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled
 # chinese input
 ibus-daemon -drx
 
+# apl keyboard
+setxkbmap -layout us,apl -variant ,dyalog -option grp:caps_switch
+
 # redshift
 redshift -l 1.290270:103.851959 &

@@ -6,6 +6,10 @@
         # MEDIA KEYS
         ##############################
 
+### News
+ctrl + shift + {XF86AudioMute,alt + KP_Enter}
+    rhythmbox-client --play-pause
+
 ### Mute
 XF86AudioMute
     amixer set Master toggle
@@ -91,14 +95,14 @@ alt + n
 
 # terminal emulator
 super + Return
-    wezterm
-    #kitty
+    kitty
+    #wezterm
     #urxvt256c-ml
 
 # for one handed triggering
 ctrl + alt + t
-    wezterm
-    #kitty
+    kitty
+    #wezterm
 	#urxvt256c-ml
 
 # program launcher
