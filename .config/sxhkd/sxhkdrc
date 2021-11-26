@@ -69,7 +69,8 @@ ctrl + alt + l
 
 ### External display
 {XF86Display, ctrl + F7}
-    printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs printf -- '--%s\n' | xargs -I \{\} bash -ic 'external_monitor \{\}'
+    printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs printf -- '--%s\n' | xargs fl_display
+    #printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs printf -- '--%s\n' | xargs -I \{\} bash -ic 'external_monitor \{\}'
 
         ##############################
         # Navigation shortcuts
