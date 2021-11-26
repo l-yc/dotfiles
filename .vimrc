@@ -7,9 +7,9 @@ silent! so .vimlocal    " to allow for project specific settings
 " background color.
 let &t_ut=''
 
-" set Vim-specific sequences for RGB colors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"" set Vim-specific sequences for RGB colors
+"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " C-r to fix syntax highlighting when it breaks
 " See: https://github.com/vim/vim/issues/2790
@@ -24,8 +24,14 @@ else
     " Set the terminal default background and foreground colors, thereby
     " improving performance by not needing to set these colors on empty cells.
     hi Normal guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
-    let &t_ti = &t_ti . "\033]10;#f6f3e8\007\033]11;#242424\007"
-    let &t_te = &t_te . "\033]110\007\033]111\007"
+    "let &t_ti = &t_ti . "\033]10;#f6f3e8\007\033]11;#242424\007"
+    "let &t_te = &t_te . "\033]110\007\033]111\007"
+endif
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+    silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 if exists('g:vimMinimal')
@@ -48,7 +54,7 @@ if exists('g:vimMinimal')
     colorscheme torte
 else
     " normal vimrc
-    nn <leader><space> :e $MYVIMRC<CR>
+    nn <leader><space> :e ~/.vimrc<CR>
     
     " VimPlug config
     " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -60,7 +66,19 @@ else
     let g:airline_theme='raven'
     let g:airline#extensions#tabline#enabled=1
     Plug 'enricobacis/vim-airline-clock'
-    Plug 'tomasr/molokai'
+
+    Plug 'Yggdroot/indentLine'
+    " IndentLine {{
+    "let g:indentLine_char = '|'
+    "let g:indentLine_first_char = '|'
+    let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+    "let g:indentLine_showFirstIndentLevel = 1
+    "let g:indentLine_setColors = 0
+    " }}
+
+    Plug 'ryanoasis/vim-devicons'
+    "Plug 'tomasr/molokai'
+    Plug 'ayu-theme/ayu-vim' " or other package manager
 
     " Tools
     nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
@@ -156,7 +174,8 @@ else
     let g:ale_fixers = {'javascript': ['eslint'], 'python': ['pylint']}
     let g:ale_sign_column_always = 1
     let g:ale_sign_error = '❌'
-    let g:ale_sign_warning = '⚠️'
+    "let g:ale_sign_warning = '⚡'
+    let g:ale_sign_warning = '💡'
     highlight clear ALEErrorSign
     highlight clear ALEWarningSign
     let g:airline#extensions#ale#enabled = 1
@@ -216,9 +235,9 @@ else
     set number
 
     set expandtab
-    set tabstop=4
-    set softtabstop=4
-    set shiftwidth=4
+    "set tabstop=4
+    "set softtabstop=4
+    "set shiftwidth=4
 
     set mouse=a
 
@@ -226,10 +245,15 @@ else
     inoremap <C-f> {<CR>}<C-o>O
 
     " Look
-    let g:molokai_original = 1
-    let g:rehash256=1
+    "colorscheme molokai
+    "let g:molokai_original = 1
+    "let g:rehash256=1
+
+    "let ayucolor="light"  " for light version of theme
+    "let ayucolor="mirage" " for mirage version of theme
+    let ayucolor="dark"   " for dark version of theme
+    colorscheme ayu
     set cursorline
-    colorscheme molokai
     set colorcolumn=80		" highlight column 80
     highlight ColorColumn ctermbg=darkgray
 
@@ -310,7 +334,7 @@ else
     endfunction
 
     function SetWebOptions()
-        setlocal ts=2 sts=2 sw=2
+        "setlocal ts=2 sts=2 sw=2
         iabbrev </ </<C-X><C-O>
         iabbrev GET router.get('', function(req, res, next) {
         iabbrev POST router.post('', function(req, res, next) {
