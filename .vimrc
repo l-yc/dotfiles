@@ -34,6 +34,9 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+set foldenable
+set foldmethod=marker
+
 if exists('g:vimMinimal')
     " contest vimrc
     call plug#begin('~/.vim/plugged')
