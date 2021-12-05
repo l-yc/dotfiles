@@ -113,7 +113,9 @@ if g:level > 0
     call plug#begin('~/.vim/plugged')
 
     Plug 'sheerun/vim-polyglot'
-        "let g:polyglot_disabled = ['latex']
+        " To make vim-tex work properly
+        " See https://github.com/sheerun/vim-polyglot/issues/204
+        let g:polyglot_disabled = ['latex']
 
     " Cosmetics {{{
     Plug 'ayu-theme/ayu-vim'
@@ -208,8 +210,10 @@ if g:level > 0
     " }}}
     Plug 'scrooloose/nerdtree'
     " NERDTree Config {{{
-        let g:NERDTreeWinPos = "right"
-        let g:NERDTreeQuitOnOpen = "1"
+        let g:NERDTreeWinPos = "left"
+        let g:NERDTreeWinSize = 25
+        let g:NERDTreeQuitOnOpen = 0
+        let g:NERDTreeMinimalUI = 0
         noremap <leader>2 :NERDTreeToggle<cr>
     " }}}
     " }}}
@@ -220,6 +224,23 @@ if g:level > 0
         let g:UltiSnipsExpandTrigger = '<tab>'
         let g:UltiSnipsJumpForwardTrigger = '<tab>'
         let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+    Plug 'godlygeek/tabular'
+    " Tabular Config {{{
+        " See https://gist.github.com/tpope/287147
+        vn  <leader>:   :Tabularize/:\zs/<CR>
+        ino <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+        function! s:align()
+          let p = '^\s*|\s.*\s|\s*$'
+          if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+            let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+            let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+            Tabularize/|/l1
+            normal! 0
+            call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+          endif
+        endfunction
+    " }}}
     " }}}
 
     " FileType Addons {{{
@@ -232,10 +253,25 @@ if g:level > 0
     Plug 'KeitaNakamura/tex-conceal.vim'
         let g:tex_conceal='abdmg'
     " }}}
+    " Markdown {{{
+    " 'plasticboy/vim-markdown' is included in vim-polyglot
+    " vim-markdown config {{{
+        let g:vim_markdown_folding_disabled = 1
+        let g:vim_markdown_frontmatter = 1 " for Hugo Blog Posts
+        let g:vim_markdown_conceal_code_blocks = 0
+        let g:vim_markdown_strikethrough = 1
+        let g:vim_markdown_math = 1
     " }}}
-
-    " Fun Stuff :) {{{
+    Plug 'ferrine/md-img-paste.vim'
+        let g:mdip_imgdir = 'img'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  } " need node.js and yarn
+        let g:mkdp_browser = 'qutebrowser'
+        "let g:mkdp_markdown_css = ''
+    Plug 'junegunn/goyo.vim'
     Plug 'junegunn/limelight.vim'
+        autocmd! User GoyoEnter Limelight
+        autocmd! User GoyoLeave Limelight!
+    " }}}
     " }}}
     call plug#end()
 
@@ -262,6 +298,7 @@ autocmd filetype julia    nnoremap <buffer> <F5> :w<CR>:!julia %<CR>
 autocmd filetype tex      call SetTexOptions()
 autocmd filetype pug,html,css,javascript,typescript,vue call SetWebOptions()
 autocmd filetype sh       nnoremap <buffer> <F5> :w<CR>:!chmod +x % &&./%<CR>
+autocmd filetype markdown call SetMarkdownOptions()
 
 function SetCOptions()
     let &g:makeprg="(gcc -o %:r %:r.c -std=c99 -Wall -lm)"
@@ -294,6 +331,11 @@ function SetWebOptions()
     iabbrev </ </<C-X><C-O>
     iabbrev GET router.get('', function(req, res, next) {
     iabbrev POST router.post('', function(req, res, next) {
+endfunction
+
+function SetMarkdownOptions()
+    nn <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
+    nn <buffer> <F5> :w<CR>:MarkdownPreview<CR>
 endfunction
 " }}}
 
