@@ -32,7 +32,8 @@ bspc config remove_unplugged_monitors true
 #: Configure look and feel of bspwm
 bspc config border_width         2
 bspc config normal_border_color  
-bspc config focused_border_color \#FF9900
+#bspc config focused_border_color \#FF9900
+bspc config focused_border_color \#FF6600
 bspc config split_ratio          0.5
 bspc config window_gap           12
 bspc config borderless_monocle   true
