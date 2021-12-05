@@ -1,0 +1,169 @@
+/**
+ * ROFI Color theme
+ * User: mbfraga
+ * Copyright: Martin B. Fraga
+ * Theme modified from flat-orange
+ * User: flush
+ * Copyright: flush
+ */
+
+/* global settings and color variables */
+* {
+   theme:             #ff6600;
+   highlight:         bold #ed8712;
+   urgent:            #e53714;
+
+   foreground:        #cfcfcf;
+   background:        #1d1d1d;
+   widget:            #262626;
+   entry:             #292929;
+   select:            #505050;
+   button:            #848484;
+
+   font:              "Titillium Web 14";
+   background-color:  @background;
+}
+
+window {
+   background-color: @background;
+   anchor: north;
+   location: north;
+   y-offset: 20%;
+   width: 720px;
+   border: 2px;
+   border-color: #000000;
+}
+
+mainbox {
+   background-color: @background;
+   spacing: 0px;
+   children: [inputbar, message, listview, mode-switcher];
+}
+
+message {
+   padding: 4px 8px;
+   background-color: @widget;
+}
+
+error-message {
+   padding: 4px;
+   background-color: @widget;
+   border: 4px;
+   border-color: @theme;
+}
+
+textbox {
+   padding: 4px 8px;
+   text-color: @foreground;
+}
+
+listview {
+   fixed-height: false;
+   dynamic: true;
+   scrollbar: false;
+   spacing: 2px;
+   background: @background;
+   columns: 1;
+}
+
+element {
+   padding: 2px 16px;
+}
+
+element normal.normal {
+   padding: 0px 16px;
+   background-color: @entry;
+   text-color: @foreground;
+}
+
+element normal.urgent {
+   background-color: @entry;
+   text-color: @urgent;
+}
+
+element normal.active {
+   background-color: @entry;
+   text-color: @theme;
+}
+
+element selected.normal {
+    background-color: @select;
+    text-color:       @foreground;
+}
+
+element selected.urgent {
+    background-color: @urgent;
+    text-color:       @background;
+}
+
+element selected.active {
+    background-color: @theme;
+    text-color:       @background;
+}
+
+element alternate.normal {
+    background-color: @entry;
+    text-color:       @foreground;
+}
+
+element alternate.urgent {
+    background-color: @entry;
+    text-color:       @urgent;
+}
+
+element alternate.active {
+    background-color: @entry;
+    text-color:       @theme;
+}
+
+mode-switcher {
+   background-color: @widget;
+   border: 4px 0px 0px 0px;
+   border-color: @theme;
+}
+
+button {
+   background-color: @widget;
+   text-color:       @button;
+}
+
+button selected {
+   text-color:       @theme;
+}
+
+inputbar {
+   background-color: @widget;
+   spacing: 0px;
+   children: [prompt, textbox-prompt-separator, entry, case-indicator];
+   padding: 4px 0px;
+   border: 0px 0px 4px 0px;
+   border-color: @theme;
+}
+
+prompt {
+   padding: 4px 0px 4px 16px;
+   background-color: inherit;
+   text-color: @theme;
+}
+
+textbox-prompt-separator {
+   background-color: inherit;
+   padding: 4px 8px 4px 0px;
+   expand: false;
+   str: ":";
+   text-color: @theme;
+}
+
+entry {
+   padding: 0px 10px;
+   margin: 4px 0px;
+   background-color: @select;
+   text-color: @foreground;
+   border-radius: 2px;
+}
+
+case-indicator {
+   padding: 4px 16px 4px 8px;
+   text-color: @theme;
+   background-color: @widget;
+}
