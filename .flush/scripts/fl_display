@@ -1,35 +1,34 @@
 #!/bin/sh
 
 echo "received $1"
-if [[ "$1" == "--restore" ]]; then
+if [[ "$1" == "restore" ]]; then
   xrandr --output HDMI-A-0 --off --output eDP --mode 1920x1080
   bspc monitor eDP -d I II III IV V VI VII VIII IX
   bspc monitor HDMI-A-0 -d
   export PRIMARY=eDP 
-elif [[ "$1" == "--dual" ]]; then
+elif [[ "$1" == "dual" ]]; then
   xrandr --output HDMI-A-0 --mode 1920x1080 --output eDP --mode 1920x1080 --right-of HDMI-A-0
   bspc monitor HDMI-A-0 -d I II III IV V VI VII VIII IX
   bspc monitor eDP -d X
   export PRIMARY=HDMI-A-0 SECONDARY=eDP
-elif [[ "$1" == "--present" ]]; then
+elif [[ "$1" == "present" ]]; then
   xrandr --output HDMI-A-0 --mode $2 --right-of eDP --output eDP --mode 1920x1080
   bspc monitor eDP -d I II III IV V VI VII VIII IX
   bspc monitor HDMI-A-0 -d X
   export PRIMARY=eDP SECONDARY=HDMI-A-0
-elif [[ "$1" == "--mirror" ]]; then # bar will die and show HDMI, which has nothing
+elif [[ "$1" == "mirror" ]]; then # bar will die and show HDMI, which has nothing
   xrandr --output HDMI-A-0 --mode 1920x1080 --same-as eDP --output eDP --mode 1920x1080 --primary
   bspc monitor eDP -d I II III IV V VI VII VIII IX
   bspc monitor HDMI-A-0 -d
   export PRIMARY=eDP
-elif [[ "$1" == "--default" ]]; then
+elif [[ "$1" == "default" ]]; then
   xrandr --output HDMI-A-0 --mode 1920x1080 --same-as eDP --output eDP --off
   bspc monitor HDMI-A-0 -d I II III IV V VI VII VIII IX
   bspc monitor eDP -d
   export PRIMARY=HDMI-A-0
 else
-  echo "Usage: fl_display --(restore|dual|present|mirror)"
-  return
+  echo "Usage: fl_display (restore|dual|present|mirror)"
 fi
 
-#$HOME/.config/sxhkd/launch.sh
+$HOME/.config/sxhkd/launch.sh
 $HOME/.config/polybar/launch.sh

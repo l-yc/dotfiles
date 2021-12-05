@@ -114,6 +114,7 @@ PATH="$PATH:$GOPATH/bin"
 export PATH
 
 export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly
+export QT_AUTO_SCREEN_SCALE_FACTOR=0.5 # for qt apps like calibre to not appear huge
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
@@ -122,7 +123,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly
 alias lll='ls -al --color=auto'
 alias ll='exa -l --group-directories-first --git'
 alias vim='nvim'
-alias vimm='vimx --cmd "let g:vimMinimal=1"'
+alias vimm='nvim --cmd "let g:level=0"'
+alias _vimm='vimx --cmd "let g:vimMinimal=1"'
 alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
 alias school='cd "/home/lyc/Dropbox/Main/School/Y6"'
 alias pwdyy='pwd | xclip -selection clipboard'
@@ -137,14 +139,6 @@ fffg() {
     fff "$@"
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
-
-# Powerline
-if [ -f `which powerline-daemon` ]; then
-  powerline-daemon -q
-  POWERLINE_BASH_CONTINUATION=1
-  POWERLINE_BASH_SELECT=1
-  . /usr/share/powerline/bash/powerline.sh
-fi
 
 toprint() {
     echo "-----TO PRINT-----"

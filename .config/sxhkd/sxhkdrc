@@ -10,6 +10,12 @@
 ctrl + shift + {XF86AudioMute,alt + KP_Enter}
     rhythmbox-client --play-pause
 
+ctrl + 1
+    notify-send "hi $PRIMARY"
+
+ctrl + 2
+    notify-send "hi $SECONDARY"
+
 ### Mute
 XF86AudioMute
     amixer set Master toggle
@@ -69,7 +75,7 @@ ctrl + alt + l
 
 ### External display
 {XF86Display, ctrl + F7}
-    printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs printf -- '--%s\n' | xargs fl_display
+    printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs fl_display
     #printf "restore\ndual\npresent\nmirror\ndefault" | rofi -dmenu | xargs printf -- '--%s\n' | xargs -I \{\} bash -ic 'external_monitor \{\}'
 
         ##############################
@@ -108,7 +114,8 @@ ctrl + alt + t
 
 # program launcher
 super + @space
-    rofi -combi-modi run,drun -show combi -modi combi,window,ssh
+    rofi -combi-modi run,drun -show drun -modi drun,window,combi
+    #rofi -combi-modi run,drun -show combi -modi combi,window,ssh
     #rofi -show run
 	# dmenu_run
 
