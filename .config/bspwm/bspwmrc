@@ -39,9 +39,11 @@ bspc config window_gap           12
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
+bspc config focus_follows_pointer true
+
 #: Configure rules for windows
 #: Example: bspc rule -a Gimp desktop='^8' state=floating follow=on
-
+bspc rule -a scratchpad sticky=on state=floating follow=on hidden=on center=true rectangle=876x685+0+0
 #: }}}
 
 #: desktop environment apps {{{
@@ -62,6 +64,7 @@ LC_CTYPE=zh_CN.utf8 LC_TIME=en_US.utf8 conky -c ~/.config/conky/conky.conf
 
 redshift -l 1.290270:103.851959 &
 safeeyes -e &
+kitty --class="scratchpad" --session="/home/lyc/.config/kitty/scratchpad.conf" &
 
 #: }}}
 
