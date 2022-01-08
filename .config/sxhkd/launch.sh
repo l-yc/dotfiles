@@ -1,8 +1,15 @@
 #!/bin/sh
 
+export PRIMARY
+export SECONDARY
 notify-send "$PRIMARY; $SECONDARY"
-if pgrep -u $UID -x sxhkd >/dev/null; then
-	pkill -USR1 -x sxhkd
-else
-	nohup sxhkd &
-fi
+
+pkill sxhkd
+nohup sxhkd &
+
+# code below restarts sxhkd
+#if pgrep -u $UID -x sxhkd >/dev/null; then
+#	pkill -USR1 -x sxhkd
+#else
+#	nohup sxhkd &
+#fi

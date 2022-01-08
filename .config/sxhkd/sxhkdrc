@@ -89,7 +89,10 @@ super + d
     nemo ~/Downloads
 
 alt + t
-    feh ~/Documents/timetable.jpg
+    xdotool search --class scratchpad | xargs -I\{\} bspc node \{\} --flag hidden -f
+    # we don't use: bspc node $(xdotool search --class tasks) --flag hidden -f
+    # because if the task window is crashed it'll hide our current window
+    #feh ~/Documents/timetable.jpg
 
 alt + q
     feh ~/Documents/periodic_table.jpg

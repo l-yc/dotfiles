@@ -28,6 +28,7 @@ elif [[ "$1" == "default" ]]; then
   export PRIMARY=HDMI-A-0
 else
   echo "Usage: fl_display (restore|dual|present|mirror)"
+  exit
 fi
 
 $HOME/.config/sxhkd/launch.sh
