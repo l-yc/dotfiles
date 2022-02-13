@@ -84,16 +84,21 @@ set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set spell
 inoremap <C-f> {<CR>}<C-o>O
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 
 " Navigation
 nnoremap 0 ^
-nnoremap <leader>bn :bn<CR>
-nnoremap <leader>bN :bN<CR>
+"nnoremap <leader>bn :bn<CR>
+"nnoremap <leader>bN :bN<CR>
 nnoremap <leader>bd :bd<CR>
-nnoremap gb :bn<CR>
-nnoremap gB :bN<CR>
+nnoremap gb :BufferLineCycleNext<CR>
+nnoremap gB :BufferLineCyclePrev<CR>
+" These commands will move the current buffer backwards or forwards in the bufferline
+nnoremap mb :BufferLineMoveNext<CR>
+nnoremap mB :BufferLineMovePrev<CR>
+
 set mouse=a
 
 " Filesystem Drawer
@@ -112,16 +117,27 @@ set shell=/bin/zsh
 if g:level > 0
     call plug#begin('~/.vim/plugged')
 
-    Plug 'sheerun/vim-polyglot'
-        " To make vim-tex work properly
-        " See https://github.com/sheerun/vim-polyglot/issues/204
-        let g:polyglot_disabled = ['latex']
+	if g:level > 80
+		Plug 'tpope/vim-sleuth'
+		"Plug 'sheerun/vim-polyglot' " really slow for some reason
+			" To make vim-tex work properly
+			" See https://github.com/sheerun/vim-polyglot/issues/204
+			let g:polyglot_disabled = ['latex', 'todo']
+	endif
+	"Plug 'tpope/vim-sleuth' " replacement?
+	"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+	" doesn't work with markdown :(
 
     " Cosmetics {{{
     Plug 'ayu-theme/ayu-vim'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'enricobacis/vim-airline-clock'
+	"Plug 'luxed/ayu-vim' " supposedly the maintained ayu but normal is weird
+	"Plug 'Shatur/neovim-ayu' " supposedly works with tree sitter
+	"Plug 'mhartington/oceanic-next' " another theme?
+    Plug 'akinsho/bufferline.nvim'
+    Plug 'nvim-lualine/lualine.nvim'
+    "Plug 'vim-airline/vim-airline'
+    "Plug 'vim-airline/vim-airline-themes'
+    "Plug 'enricobacis/vim-airline-clock'
     " Airline Config {{{
         let g:airline_theme='raven'
         let g:airline#extensions#tabline#enabled=1
@@ -130,7 +146,8 @@ if g:level > 0
     " IndentLine Config {{{
     let g:indentLine_char_list = ['|', '¦', '┆', '┊']
     " }}}
-    Plug 'ryanoasis/vim-devicons'
+    "Plug 'ryanoasis/vim-devicons'
+    Plug 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)
     " }}}
 
     " Dev Tools {{{
@@ -144,7 +161,7 @@ if g:level > 0
         \   "function": "\uf794",
         \   "variable": "\uf71b",
         \  }
-        nnoremap <leader>3 :Vista!!<CR>
+        nnoremap <F3> :Vista!!<CR>
     " }}}
     Plug 'dense-analysis/ale'
     " ALE Config {{{
@@ -160,6 +177,7 @@ if g:level > 0
     " }}}
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " CoC Config {{{
+        " let g:coc_global_extensions = ['coc-json', 'coc-git']
         " Use `[g` and `]g` to navigate diagnostics
         " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
         nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -193,10 +211,24 @@ if g:level > 0
         inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                                   \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+        autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+        autocmd BufWritePre *.go :call CocAction('format')
+        autocmd FileType go nmap gtj :CocCommand go.tags.add json<cr>
+        autocmd FileType go nmap gty :CocCommand go.tags.add yaml<cr>
+        autocmd FileType go nmap gtx :CocCommand go.tags.clear<cr>
     " }}}
+    Plug 'github/copilot.vim'
     " }}}
 
     " Filesystem Navigation {{{
+    Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
+    "    nn <C-p> :Clap files<CR>
+    "    nn <C-space> :Clap quick_open<CR>
+    "    let g:clap_provider_quick_open = {
+    "                \ 'source': ['~/.config/nvim/init.vim', '~/.zshrc'],
+    "                \ 'sink': 'e',
+    "                \ 'description': 'Quick open some dotfiles',
+    "                \ }
     Plug 'ctrlpvim/ctrlp.vim'
     " CtrlP Config {{{
         let g:ctrlp_map = '<c-p>'
@@ -206,16 +238,19 @@ if g:level > 0
         set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
         let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-        let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+        "let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+        let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
     " }}}
-    Plug 'scrooloose/nerdtree'
+    "Plug 'scrooloose/nerdtree'
     " NERDTree Config {{{
         let g:NERDTreeWinPos = "left"
         let g:NERDTreeWinSize = 25
         let g:NERDTreeQuitOnOpen = 0
         let g:NERDTreeMinimalUI = 0
-        noremap <leader>2 :NERDTreeToggle<cr>
+        "noremap <F2> :NERDTreeToggle<cr>
+        nnoremap <F2> :NvimTreeToggle<CR>
     " }}}
+    Plug 'kyazdani42/nvim-tree.lua'
     " }}}
 
     " Editor Upgrades {{{
@@ -254,7 +289,7 @@ if g:level > 0
         let g:tex_conceal='abdmg'
     " }}}
     " Markdown {{{
-    " 'plasticboy/vim-markdown' is included in vim-polyglot
+    Plug 'plasticboy/vim-markdown' " is included in vim-polyglot
     " vim-markdown config {{{
         let g:vim_markdown_folding_disabled = 1
         let g:vim_markdown_frontmatter = 1 " for Hugo Blog Posts
@@ -272,19 +307,38 @@ if g:level > 0
         autocmd! User GoyoEnter Limelight
         autocmd! User GoyoLeave Limelight!
     " }}}
+    " Golang {{{
+    " }}} 
+    " }}}
+
+    " Specials {{{
     " }}}
     call plug#end()
 
+	set background=dark
     let ayucolor="dark"   " or light or mirage
     colorscheme ayu
+	"colorscheme OceanicNext
 endif
 " }}}
 
 " Language specific options {{{
+function AddTemplate(tmpl_file)
+    exe "0read " . a:tmpl_file
+    let substDict = {}
+    let substDict["title"] = "New Entry"
+    let substDict["author"] = $USER
+    let substDict["date"] = strftime("%FT%T%z")
+    exe '%s/{{\([^>]*\)}}/\=substDict[submatch(1)]/g'
+    set nomodified
+    normal G
+endfunction
+
 augroup templates
     autocmd BufNewFile *.cpp 0r ~/Templates/ans.cpp
     autocmd BufNewFile *.html 0r ~/Templates/page.html
     autocmd BufNewFile *.tex 0r ~/Templates/doc.tex
+    autocmd BufNewFile *.md call AddTemplate("~/Templates/entry.md")
 augroup END
 
 autocmd filetype c        call SetCOptions()
@@ -339,5 +393,31 @@ function SetMarkdownOptions()
 endfunction
 " }}}
 
-silent! source .vimlocal    " to allow for project specific settings
+lua <<EOF
+-- require('navigator').setup {}
+
+require('nvim-tree').setup {}
+
+require('bufferline').setup {
+    options = {
+        offsets = {
+          {
+            filetype = "NvimTree",
+            text = "File Explorer",
+            highlight = "Directory",
+            text_align = "left"
+          }
+        }
+    }
+}
+
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+  }
+}
+EOF
+
+silent! source config.vim   " to allow for project specific settings
 echom "flush: Started Vim level " . g:level . "!"
