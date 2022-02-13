@@ -129,9 +129,9 @@ if g:level > 0
 	" doesn't work with markdown :(
 
     " Cosmetics {{{
-    Plug 'ayu-theme/ayu-vim'
-	"Plug 'luxed/ayu-vim' " supposedly the maintained ayu but normal is weird
-	"Plug 'Shatur/neovim-ayu' " supposedly works with tree sitter
+    Plug 'luxed/ayu-vim'
+        "Plug 'ayu-theme/ayu-vim' " no longer maintained
+	"Plug 'Shatur/neovim-ayu' " has some issues with windows
 	"Plug 'mhartington/oceanic-next' " another theme?
     Plug 'akinsho/bufferline.nvim'
     Plug 'nvim-lualine/lualine.nvim'
@@ -218,6 +218,7 @@ if g:level > 0
         autocmd FileType go nmap gtx :CocCommand go.tags.clear<cr>
     " }}}
     Plug 'github/copilot.vim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     " }}}
 
     " Filesystem Navigation {{{
@@ -315,10 +316,10 @@ if g:level > 0
     " }}}
     call plug#end()
 
-	set background=dark
+    set background=dark
     let ayucolor="dark"   " or light or mirage
     colorscheme ayu
-	"colorscheme OceanicNext
+    "colorscheme OceanicNext
 endif
 " }}}
 
@@ -395,6 +396,36 @@ endfunction
 
 lua <<EOF
 -- require('navigator').setup {}
+
+require('nvim-treesitter.configs').setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "maintained",
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- List of parsers to ignore installing
+  ignore_install = {},
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- list of language that will be disabled
+    disable = {},
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+
+  rainbow = {
+    enable = true,
+    colors = require('ayu').rainbow_colors
+  }
+}
 
 require('nvim-tree').setup {}
 
