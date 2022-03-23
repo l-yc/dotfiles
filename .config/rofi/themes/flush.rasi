@@ -21,14 +21,17 @@
    button:            #848484;
 
    font:              "Titillium Web 14";
-   background-color:  @background;
+   /*background-color:  @background;*/
+   background-color:  inherit;
+   text-color: inherit;
 }
 
 window {
    background-color: @background;
    anchor: north;
    location: north;
-   y-offset: 20%;
+   //y-offset: 20%;
+   y-offset: 100px;
    width: 720px;
    border: 2px;
    border-color: #000000;
@@ -68,6 +71,7 @@ listview {
 
 element {
    padding: 2px 16px;
+   text-color: @foreground;
 }
 
 element normal.normal {
