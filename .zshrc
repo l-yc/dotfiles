@@ -220,7 +220,7 @@ trap finish EXIT
 
 source <(kitty + complete setup bash)
 alias config='/usr/bin/git --git-dir=/home/lyc/.cfg/ --work-tree=/home/lyc'
-. "/home/lyc/bin/hoard"
+#. "/home/lyc/bin/hoard"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
