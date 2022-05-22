@@ -1,43 +1,7 @@
 Xft.dpi: 144
-
-!URxvt.font: xft:Monospace:size=10
-URxvt.font:xft:DejaVu Sans Mono for Powerline:size=10,xft:WenQuanYi Bitmap Song:pixelsize=18;antialias=false
-URxvt.boldFont:xft:DejaVu Sans Mono for Powerline:size=10:style=Bold,xft:WenQuanYi Bitmap Song:pixelsize=18:style=Bold:antialias=false
-!URxvt.font: xft:DejaVu\ Sans\ Mono\ for\ Powerline:pixelsize=22,xft:PowerlineSymbols
-!URxvt.font: xft:Monospace:size=18
-!URxvt.perl-ext-common: ...,tabbed,...
-URxvt.perl-ext-common: tabbed
-URxvt.scrollBar: false
-URxvt.tabbed.tabbar-fg: 15
-URxvt.tabbed.tabbar-bg: 0
-URxvt.tabbed.tab-fg: 208
-URxvt.tabbed.tab-bg: 0
-URxvt.internalBorder: 10
-URxvt.cursorColor2: 0
-URxvt.keysym.C-Down:  resize-font:smaller
-URxvt.keysym.C-Up:    resize-font:bigger
-!URxvt.visualBell: true
-
-URxvt*depth: 32
-URxvt*background: rgba:0000/0000/0200/c800
-
-! Dracula Xresources palette
-*.foreground: #F8F8F2
-!*.foreground: #00FF00
-*.background: #282A36
-!*.color0:     #000000
-!*.color8:     #4D4D4D
-!*.color1:     #FF5555
-!*.color9:     #FF6E67
-!*.color2:     #50FA7B
-!*.color10:    #5AF78E
-!*.color3:     #F1FA8C
-!*.color11:    #F4F99D
-!*.color4:     #BD93F9
-!*.color12:    #CAA9FA
-!*.color5:     #FF79C6
-!*.color13:    #FF92D0
-!*.color6:     #8BE9FD
-!*.color14:    #9AEDFE
-!*.color7:     #BFBFBF
-!*.color15:    #E6E6E6
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
