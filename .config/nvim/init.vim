@@ -84,7 +84,7 @@ set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set spell
+"set spell
 inoremap <C-f> {<CR>}<C-o>O
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 
@@ -399,7 +399,7 @@ lua <<EOF
 
 require('nvim-treesitter.configs').setup {
   -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  ensure_installed = "all",
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
