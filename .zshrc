@@ -187,7 +187,7 @@ mkcode() {
 
 ypl() {
     hoard o ypl
-    source venv/bin/activate
+# source venv/bin/activate  # commented out by conda initialize
     python main.py
 }
 
@@ -224,3 +224,23 @@ alias config='/usr/bin/git --git-dir=/home/lyc/.cfg/ --work-tree=/home/lyc'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+GPG_TTY=`tty`
+export GPG_TTY
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/lyc/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/lyc/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/lyc/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/lyc/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+. "$HOME/.cargo/env"

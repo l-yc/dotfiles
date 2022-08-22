@@ -246,3 +246,4 @@ trap finish EXIT
 source <(kitty + complete setup bash)
 alias config='/usr/bin/git --git-dir=/home/lyc/.cfg/ --work-tree=/home/lyc'
 . "/home/lyc/bin/hoard"
+. "$HOME/.cargo/env"

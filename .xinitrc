@@ -11,4 +11,11 @@
 #
 #[ -f /etc/xprofile ] && . /etc/xprofile
 #[ -f ~/.xprofile ] && . ~/.xprofile
-exec i3
+
+# https://github.com/microsoft/vscode/issues/120392#issuecomment-814210643
+# init keyring
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
+# export keyring
+export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
+
+exec dbus-launch i3
