@@ -36,14 +36,24 @@ bar {
   position top
   colors {
     background #000000
-    statusline #FFFFFF
+    statusline #EEEEEE
     separator  #666666
 
-    focused_workspace  #83CAFA #51A2DA #FFFFFF
+    focused_workspace  #FF6600 #773300 #FF6600
     active_workspace   #3C6EB4 #294172 #FFFFFF
     inactive_workspace #8C8C8C #4C4C4C #888888
     urgent_workspace   #EC69A0 #DB3279 #FFFFFF
     binding_mode       #b691d3 #A07CBC #FFFFFF
+
+    #background #000000
+    #statusline #FFFFFF
+    #separator  #666666
+
+    #focused_workspace  #83CAFA #51A2DA #FFFFFF
+    #active_workspace   #3C6EB4 #294172 #FFFFFF
+    #inactive_workspace #8C8C8C #4C4C4C #888888
+    #urgent_workspace   #EC69A0 #DB3279 #FFFFFF
+    #binding_mode       #b691d3 #A07CBC #FFFFFF
   }
   status_command i3status
 }
@@ -96,6 +106,19 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 #: }}}
 #: windows {{{
+
+#: style {{{
+# class                 border  backgr. text    indicator child_border
+client.focused          #FF6600 #773300 #FFFFFF #FFFFFF   #FF6600
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+# client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+# client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+# client.urgent           #2f343a #900000 #ffffff #900000   #900000
+# client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+# 
+# client.background       #ffffff
+#: }}}
+
 #: focus and move {{{
 # focus direction
 bindsym $mod+h focus left
@@ -261,12 +284,16 @@ exec --no-startup-id xdg-user-dirs-update
 # touchpad config
 exec --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
 exec --no-startup-id xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1
+exec --no-startup-id fusuma -d
 
 # apps
 exec --no-startup-id ibus-daemon -drxR
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
-exec --no-startup-id redshift -l 1.290270:103.851959
+#exec --no-startup-id redshift -l 1.290270:103.851959
+exec --no-startup-id redshift -l 42.365250:-71.105011
 exec --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/anime/wp4088544.jpg
+exec --no-startup-id conky -c ~/.config/conky/conky.conf
+exec --no-startup-id ~/Apps/activitywatch/aw-qt
 #: }}}
 #: apps {{{
 # start a terminal

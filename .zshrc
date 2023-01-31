@@ -135,11 +135,13 @@ alias vimm='nvim --cmd "let g:level=0"'
 alias vimmm='nvim --cmd "let g:level=-1"'
 alias _vimm='vimx --cmd "let g:vimMinimal=1"'
 alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
-alias school='cd "/home/lyc/Dropbox/Main/School/Y6"'
+alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Fall_2022"'
+alias urop='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_2022"'
 alias pwdyy='pwd | xclip -selection clipboard'
 alias docker='podman'
 alias chkspace='sudo du -d 1 -h | sort -h'
 alias chkbat='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
+alias ddev='cd "/home/lyc/Documents/Dev"'
 # /etc/sysconfig/network-scripts/
 
 # Add this to your .bashrc, .zshrc or equivalent.
@@ -244,3 +246,17 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 . "$HOME/.cargo/env"
+export PATH="/home/lyc/.local/share/solana/install/active_release/bin:$PATH"
+#
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# opam configuration
+[[ ! -r /home/lyc/.opam/opam-init/init.zsh ]] || source /home/lyc/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.fc35.x86_64/"

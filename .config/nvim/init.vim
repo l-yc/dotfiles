@@ -177,7 +177,7 @@ if g:level > 0
     " }}}
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " CoC Config {{{
-        let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-pyright', 'coc-rust-analyzer']
+        let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-pyright', 'coc-rust-analyzer', 'coc-vimtex', 'coc-java']
         "" Use `[g` and `]g` to navigate diagnostics
         "" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
         "nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -468,6 +468,9 @@ if g:level > 0
     " }}}
     " Golang {{{
     " }}} 
+    " Coq {{{
+    Plug 'whonore/Coqtail'
+    " }}}
     " }}}
 
     " Specials {{{
@@ -514,6 +517,11 @@ autocmd filetype tex      call SetTexOptions()
 autocmd filetype pug,html,css,javascript,typescript,vue call SetWebOptions()
 autocmd filetype sh       nnoremap <buffer> <F5> :w<CR>:!chmod +x % &&./%<CR>
 autocmd filetype markdown call SetMarkdownOptions()
+autocmd filetype coq      call SetCoqOptions()
+
+" ocaml
+let g:opamshare = substitute(system('opam var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
 
 function SetCOptions()
     let &g:makeprg="(gcc -o %:r %:r.c -std=c99 -Wall -lm)"
@@ -526,7 +534,8 @@ function SetCppOptions()
     " fsanitize debugs null pointer exceptions
     let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address)"
     nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
-    nn  <buffer> <F6> <ESC>:terminal time ./%:r < in.txt<CR>
+    nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
+    "nn  <buffer> <F6> <ESC>:terminal time ./%:r < in.txt<CR>
     nn  <buffer> <F8> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r<CR>
     nn  <buffer> <F9> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r && time ./%:r < in.txt<CR>
     let g:airline#extensions#clock#format = '%H:%M:%S'
@@ -603,6 +612,22 @@ endfunction
 function SetMarkdownOptions()
     nn <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
     nn <buffer> <F5> :w<CR>:MarkdownPreview<CR>
+endfunction
+
+function SetCoqOptions()
+    nn <leader><CR> :CoqNext<CR>
+    ino <leader><CR> <ESC>:CoqNext<CR>
+    nn <leader><BS> :CoqUndo<CR>
+    ino <leader><BS> <ESC>:CoqUndo<CR>
+
+    set ts=2 sts=2 sw=2 expandtab
+
+    augroup CoqtailHighlights
+        autocmd!
+        autocmd ColorScheme *
+            \  hi def CoqtailChecked ctermbg=236
+            \| hi def CoqtailSent    ctermbg=237
+    augroup END
 endfunction
 " }}}
 
