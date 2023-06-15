@@ -62,6 +62,25 @@ set updatetime=300
 set cmdheight=2
 set shell=/bin/zsh
 " }}}
+" Templates {{{
+function AddTemplate(tmpl_file)
+    exe "0read " . a:tmpl_file
+    let substDict = {}
+    let substDict["title"] = "New Entry"
+    let substDict["author"] = $USER
+    let substDict["date"] = strftime("%FT%T%z")
+    exe '%s/{{\([^>]*\)}}/\=substDict[submatch(1)]/g'
+    set nomodified
+    normal G
+endfunction
+
+augroup templates
+    autocmd BufNewFile *.cpp 0r ~/Templates/ans.cpp
+    autocmd BufNewFile *.html 0r ~/Templates/page.html
+    autocmd BufNewFile *.tex 0r ~/Templates/doc.tex
+    autocmd BufNewFile *.md call AddTemplate("~/Templates/entry.md")
+augroup END
+" }}}
 
 if g:level > 0
 	" Plugins (vim-plug)
@@ -83,6 +102,7 @@ if g:level > 0
     Plug 'KeitaNakamura/tex-conceal.vim'
         let g:tex_conceal='abdmg'
 	Plug 'whonore/Coqtail'
+    Plug 'jamessan/vim-gnupg'
 	call plug#end()
 
 	" Plugins (packer.nvim):
@@ -324,9 +344,10 @@ if g:level > 0
 	" Coq {{{
 	autocmd filetype coq      call SetCoqOptions()
 	function SetCoqOptions()
-		nn <leader><CR> :CoqNext<CR>
+		nn <CR> :CoqNext<CR>
 		ino <leader><CR> <ESC>:CoqNext<CR>
-		nn <leader><BS> :CoqUndo<CR>
+		"nn <leader><BS> :CoqUndo<CR>
+		nn <BS> :CoqUndo<CR>
 		ino <leader><BS> <ESC>:CoqUndo<CR>
 		set ts=2 sts=2 sw=2 expandtab
 	endfunction

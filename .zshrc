@@ -135,13 +135,14 @@ alias vimm='nvim --cmd "let g:level=0"'
 alias vimmm='nvim --cmd "let g:level=-1"'
 alias _vimm='vimx --cmd "let g:vimMinimal=1"'
 alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
-alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Fall_2022"'
+alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Spring_2023"'
 alias urop='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_2022"'
 alias pwdyy='pwd | xclip -selection clipboard'
 alias docker='podman'
 alias chkspace='sudo du -d 1 -h | sort -h'
 alias chkbat='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 alias ddev='cd "/home/lyc/Documents/Dev"'
+alias NOTIFY=' && notify-send "job done" || notify-send "job failed"'
 # /etc/sysconfig/network-scripts/
 
 # Add this to your .bashrc, .zshrc or equivalent.
@@ -194,7 +195,7 @@ ypl() {
 }
 
 serve_static() {
-    python3 -m http.server 8080 --bind 127.0.0.1
+    python3 -m http.server 8080 --bind 0.0.0.0
 }
 
 pause() {
@@ -260,3 +261,6 @@ export NVM_DIR="$HOME/.nvm"
 [[ ! -r /home/lyc/.opam/opam-init/init.zsh ]] || source /home/lyc/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.fc35.x86_64/"
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
