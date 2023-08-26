@@ -359,6 +359,38 @@ if g:level > 0
 					\| hi def CoqtailSent    ctermbg=2 guibg=DarkGreen
 	augroup END
 	" }}}
+	" C++ {{{
+    autocmd filetype cpp      call SetCppOptions()
+    function SetCppOptions()
+        " fsanitize debugs null pointer exceptions
+        "nnoremap <F5> :w<CR>:!g++ -std=c++17 -fsanitize=address % -o %:r && ./%:r<CR>
+        "nnoremap <F8> :w<CR>:!g++ -std=c++17 -fsanitize=address -g -D_GLIBCXX_DEBUG % && gdb a.out <CR>
+        "let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < %:r.in)"
+
+        "nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
+        "nn  <buffer> <F6> <ESC>:!time ./%:r < in.txt<CR>
+        
+        "" fancy rewrite using kitty
+        "let g:cmd = 'kitty @ launch --cwd=current --type=window --keep-focus bash -c "'
+        "let g:endcmd="read -p 'Press enter to continue'\""
+        "let g:compile=g:cmd . 'g++ -o %s %s.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%s < in.txt; ' . g:endcmd
+        "let g:run=g:cmd . 'time ./%s < in.txt; ' . g:endcmd
+        "nn  <buffer> <F5> <ESC>:wa<CR>:call system(printf(compile, expand('%:r'), expand('%:r'), expand('%:r')))<CR>
+        "nn  <buffer> <F6> <ESC>:wa<CR>:call system(printf(run, expand('%:r')))<CR>
+        "nn  <buffer> <F8> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r<CR>
+        "nn  <buffer> <F9> :w<CR>:!g++ -std=c++17 -Wall -fsanitize=address grader.cpp % -o %:r && time ./%:r < in.txt<CR>
+        "let g:airline#extensions#clock#format = '%H:%M:%S'
+        "let g:airline#extensions#clock#updatetime = 1000
+        "let g:airline#extensions#clock#mode = 'elapsed'
+
+		" back to make
+        let &g:makeprg="(g++ -o %:r %:r.cpp -O2 -std=c++17 -Wall -fsanitize=address && time ./%:r < %:r.in)"
+        nn  <buffer> <F5> <ESC>:wa<CR>:make!<CR>:copen<CR>
+        nn  <buffer> <F6> <ESC>:!time ./%:r < ./%:r.in<CR>
+
+        nn  <leader>i   :30vs ./%:r.in<CR><ESC>GA
+    endfunction
+	" }}}
 
 	" Colorscheme {{{	
 	set background=dark

@@ -138,7 +138,7 @@ alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
 alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Spring_2023"'
 alias urop='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_2022"'
 alias pwdyy='pwd | xclip -selection clipboard'
-alias docker='podman'
+#alias docker='podman'
 alias chkspace='sudo du -d 1 -h | sort -h'
 alias chkbat='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 alias ddev='cd "/home/lyc/Documents/Dev"'
@@ -233,17 +233,21 @@ export GPG_TTY
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/lyc/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/lyc/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/lyc/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/lyc/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/lyc/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/lyc/mambaforge/etc/profile.d/conda.sh"
     else
-        export PATH="/home/lyc/anaconda3/bin:$PATH"
+        export PATH="/home/lyc/mambaforge/bin:$PATH"
     fi
 fi
 unset __conda_setup
+
+if [ -f "/home/lyc/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/lyc/mambaforge/etc/profile.d/mamba.sh"
+fi
 # <<< conda initialize <<<
 
 . "$HOME/.cargo/env"

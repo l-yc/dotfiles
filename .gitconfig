@@ -10,6 +10,7 @@
 	process = git-lfs filter-process
 	required = true
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
+	#tool = vimdiff
 [mergetool]
 	path = nvim

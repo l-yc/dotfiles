@@ -15,7 +15,7 @@ mode "config" {
 #: styles {{{
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Iosevka Term 8
+font pango:Iosevka Nerd Font Mono 8
 
 # remove title bar for split mode 
 default_border pixel
@@ -302,8 +302,8 @@ exec --no-startup-id ~/Apps/activitywatch/aw-qt
 bindsym $mod+Return exec kitty
 
 # start launcher (alternatives: dmenu_run, rofi, i3-dmenu-desktop)
-#bindsym $mod+space exec --no-startup-id "albert toggle"
-bindsym $mod+space exec --no-startup-id "i3-dmenu-desktop"
+bindsym $mod+space exec --no-startup-id "albert toggle"
+#bindsym $mod+space exec --no-startup-id "i3-dmenu-desktop"
 
 # launch folders
 bindsym $mod+e exec --no-startup-id nemo ~
@@ -319,4 +319,9 @@ mode "$mode_launcher" {
     bindsym Escape mode "default"
     bindsym Return mode "default"
 }
+
+# todo (trial)
+exec --no-startup-id /var/lib/flatpak/exports/bin/com.todoist.Todoist
+for_window [instance="todoist"] move scratchpad
+bindsym $mod+minus [class="Todoist"] scratchpad show, move window to position 585 90
 #: }}}
