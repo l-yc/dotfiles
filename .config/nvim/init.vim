@@ -323,9 +323,11 @@ if g:level > 0
 	nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 	" }}}
 	" Bufferline {{{
-	nnoremap <leader>bd :bd<CR>
+	nnoremap <leader>db :bd<CR>
 	nnoremap gb :BufferLineCycleNext<CR>
 	nnoremap gB :BufferLineCyclePrev<CR>
+	nnoremap <leader><tab> :BufferLineCycleNext<CR>
+	nnoremap <leader><S-tab> :BufferLineCyclePrev<CR>
 	" These commands will move the current buffer backwards or forwards in the bufferline
 	nnoremap mb :BufferLineMoveNext<CR>
 	nnoremap mB :BufferLineMovePrev<CR>

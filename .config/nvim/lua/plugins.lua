@@ -2,6 +2,7 @@ require('packer').startup(function(use)
 -- Packer can manage itself
 use 'wbthomason/packer.nvim'
 -- Dev {{{
+use 'github/copilot.vim'
 use {'neoclide/coc.nvim', branch = 'release'}
 use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
 use { 'chipsenkbeil/distant.nvim', branch = 'v0.2', config = function()
