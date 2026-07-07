@@ -7,3 +7,5 @@ export QT_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export GLFW_IM_MODULE=ibus
 . "$HOME/.cargo/env"
+
+export PATH="$HOME/.elan/bin:$PATH"

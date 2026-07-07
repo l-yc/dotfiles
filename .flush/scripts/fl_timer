@@ -9,6 +9,9 @@ countdown(){
   date1=$((`date +%s` + $1));
   while [ "$date1" -ge `date +%s` ]; do
     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+    if [[ "$2" == "--gui" ]]; then
+      notify-send --hint="string:x-dunst-stack-tag:timer" "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)";
+    fi
     sleep 0.1
   done
   speak-ng "time's up"
@@ -29,9 +32,9 @@ stopwatch(){
 #: }}}
 
 if [[ "$1" == "countdown" ]]; then
-  countdown "$2"
+  countdown "$2" "$3"
 elif [[ "$1" == "stopwatch" ]]; then
   stopwatch "$2" "$3"
 else
-  echo "Usage: fl_timer (countdown|timer) [options]"
+  echo "Usage: fl_timer (countdown|stopwatch) [options]"
 fi

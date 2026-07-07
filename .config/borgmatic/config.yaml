@@ -12,8 +12,8 @@
 source_directories:
     - /home
     - /etc
-    - /var/log/syslog*
-    - /home/user/path with spaces
+    #- /var/log/syslog*
+    #- /home/user/path with spaces
 
 # A required list of local or remote repositories with paths and
 # optional labels (which can be used with the --repository flag to
@@ -25,9 +25,9 @@ source_directories:
 # ReadWritePaths list. Prior to borgmatic 1.7.10, repositories was a
 # list of plain path strings.
 repositories:
-    - path: ssh://user@backupserver/./sourcehostname.borg
-      label: backupserver
-    - path: /mnt/backup
+    #- path: ssh://user@backupserver/./sourcehostname.borg
+    #  label: backupserver
+    - path: /mnt/luks/koelnest-backup
       label: local
 
 # Working directory for the "borg create" command. Tildes are
@@ -100,7 +100,9 @@ repositories:
 # and tildes are expanded. Note that a glob pattern must either start
 # with a glob or be an absolute path. Do not backslash spaces in path
 # names. See the output of "borg help patterns" for more details.
-# exclude_patterns:
+exclude_patterns:
+    - node_modules/
+    - .cargo/
     # - '*.pyc'
     # - /home/*/.cache
     # - '*/.vim*.tmp'

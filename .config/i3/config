@@ -57,6 +57,7 @@ bar {
     #binding_mode       #b691d3 #A07CBC #FFFFFF
   }
   status_command i3status
+  tray_output eDP
 }
 #: }}}
 #: displays {{{
@@ -66,6 +67,8 @@ bindsym Ctrl+F7 exec --no-startup-id $display
 bindsym XF86Display exec --no-startup-id $display
 #: }}}
 #: workspaces {{{
+workspace 10 output HDMI-A-0
+
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
@@ -92,7 +95,8 @@ bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
 # toggle recent workspaces
-bindsym $mod+grave workspace back_and_forth
+#bindsym $mod+grave workspace back_and_forth
+bindsym $mod+Tab workspace back_and_forth
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -189,7 +193,8 @@ bindsym $mod+Shift+t layout toggle split
 bindsym $mod+s floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+Tab focus mode_toggle
+#bindsym $mod+Tab focus mode_toggle
+bindsym $mod+grave focus mode_toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle

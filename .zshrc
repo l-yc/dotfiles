@@ -116,33 +116,48 @@ PATH="$PATH:/var/lib/flatpak/exports/bin"
 PATH="$PATH:/var/lib/snapd/snap/bin"
 PATH="$PATH:~/CodeSourcery/arm-2009q1/bin/"
 PATH="$PATH:$HOME/.flush/scripts/"
+PATH="$PATH:$HOME/.local/share/pnpm/bin"
 
 export GOPATH="$HOME/Documents/LocalDev/go"
 PATH="$PATH:$GOPATH/bin"
+
+export DAFNYPATH="$HOME/Documents/Dev/dafny-4.10"
+PATH="$PATH:$DAFNYPATH"
+PATH="$PATH:$HOME/.elan/bin"
 export PATH
 
 export _JAVA_AWT_WM_NONREPARENTING=1 # for java apps to display properly
 export QT_AUTO_SCREEN_SCALE_FACTOR=0.5 # for qt apps like calibre to not appear huge
+export LIBVIRT_DEFAULT_URI="qemu:///system" # for kvm to work properly
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
 alias lll='ls -al --color=auto'
-alias ll='exa -l --group-directories-first --git'
+#alias ll='exa -l --group-directories-first --git'
+alias ll='ls -alh'
 alias vim='nvim'
 alias vimm='nvim --cmd "let g:level=0"'
 alias vimmm='nvim --cmd "let g:level=-1"'
 alias _vimm='vimx --cmd "let g:vimMinimal=1"'
 alias dcode='cd "/home/lyc/Dropbox/Main/Code/CP"'
-alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Spring_2023"'
-alias urop='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_2022"'
+alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Fall_2025"'
+#alias school='cd "/home/lyc/Dropbox/Main/School/MIT/Spring_2025"'
+#alias school='cd "/home/lyc/Dropbox/Main/School/MIT/MISTI_IAP_2025"'
+alias work='cd "/home/lyc/Dropbox/Main/Work"'
+alias plv='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_PLV"'
+alias mcdermott='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_McDermott"'
+alias pdos='cd "/home/lyc/Dropbox/Main/School/MIT/UROP_PDOS"'
+alias dmain='cd "/home/lyc/Dropbox/Main/"'
+alias dacc='cd "/home/lyc/Dropbox/Main/Notes/Obsidian Vault/Personal/Monies"'
 alias pwdyy='pwd | xclip -selection clipboard'
 #alias docker='podman'
 alias chkspace='sudo du -d 1 -h | sort -h'
 alias chkbat='upower -i /org/freedesktop/UPower/devices/battery_BAT0'
 alias ddev='cd "/home/lyc/Documents/Dev"'
 alias NOTIFY=' && notify-send "job done" || notify-send "job failed"'
+alias emacs='emacs-nox'
 # /etc/sysconfig/network-scripts/
 
 # Add this to your .bashrc, .zshrc or equivalent.
@@ -250,6 +265,9 @@ if [ -f "/home/lyc/mambaforge/etc/profile.d/mamba.sh" ]; then
 fi
 # <<< conda initialize <<<
 
+#conda activate /home/lyc/anaconda3
+mamba activate base
+
 . "$HOME/.cargo/env"
 export PATH="/home/lyc/.local/share/solana/install/active_release/bin:$PATH"
 #
@@ -264,7 +282,17 @@ export NVM_DIR="$HOME/.nvm"
 # opam configuration
 [[ ! -r /home/lyc/.opam/opam-init/init.zsh ]] || source /home/lyc/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.352.b08-2.fc35.x86_64/"
+export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.362.b09-2.fc37.x86_64/"
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/lyc/Documents/Work/2023-Fall-Genesis/google-cloud-sdk/path.zsh.inc' ]; then . '/home/lyc/Documents/Work/2023-Fall-Genesis/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/lyc/Documents/Work/2023-Fall-Genesis/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/lyc/Documents/Work/2023-Fall-Genesis/google-cloud-sdk/completion.zsh.inc'; fi
+
+alias PYRUN='PYLSL_LIB=/home/lyc/mambaforge/envs/bci-hackathon/lib/liblsl.so python3'
+
+alias kubectl="minikube kubectl --"
